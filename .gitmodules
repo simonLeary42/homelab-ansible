@@ -1,0 +1,3 @@
+[submodule "collections/ansible_collections/unity/general"]
+	path = collections/ansible_collections/unity/general
+	url = https://gitlab.rc.umass.edu/unity/ansible-collections/general.git

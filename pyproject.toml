@@ -1,0 +1,10 @@
+[project]
+name = "ansible-homelab"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ansible>=14.2.0",
+    "clustershell>=1.10.1",
+]
