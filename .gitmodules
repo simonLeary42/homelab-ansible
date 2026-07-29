@@ -1,3 +1,15 @@
 [submodule "collections/ansible_collections/unity/general"]
 	path = collections/ansible_collections/unity/general
 	url = https://gitlab.rc.umass.edu/unity/ansible-collections/general.git
+[submodule "collections/ansible_collections/unity/command_shell_diff"]
+	path = collections/ansible_collections/unity/command_shell_diff
+	url = https://gitlab.rc.umass.edu/unity/ansible-collections/command-shell-diff.git
+[submodule "collections/ansible_collections/unity/template_multi_diff"]
+	path = collections/ansible_collections/unity/template_multi_diff
+	url = https://gitlab.rc.umass.edu/unity/ansible-collections/template-multi-diff.git
+[submodule "collections/ansible_collections/unity/copy_multi_diff"]
+	path = collections/ansible_collections/unity/copy_multi_diff
+	url = https://gitlab.rc.umass.edu/unity/ansible-collections/copy-multi-diff.git
+[submodule "collections/ansible_collections/unity/file_multi_diff"]
+	path = collections/ansible_collections/unity/file_multi_diff
+	url = https://gitlab.rc.umass.edu/unity/ansible-collections/file-multi-diff.git
