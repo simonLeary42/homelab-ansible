@@ -1,3 +1,6 @@
 - name: set timezone
   community.general.timezone:
     name: America/New_York
+
+- name: gitea
+  import_tasks: gitea.yml
