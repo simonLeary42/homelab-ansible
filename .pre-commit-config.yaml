@@ -32,7 +32,14 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-yaml
-        exclude: "^tests/.*"
+        exclude: |
+          (?x)^(
+              tests/.*|
+              .*/secrets.yml|
+          )$
+      - id: check-yaml
+        args: [--unsafe]
+        include: .*/secrets.yml
       - id: check-json
       - id: check-xml
       - id: check-added-large-files
