@@ -2,15 +2,15 @@
   include_vars: secrets.yml
   tags: [always]
 
+- name: nosnapd
+  import_tasks: nosnapd.yml
+  tags: nosnapd
+
 - name: overwrite /etc/apt/sources.list.d/ubuntu.sources
   unity.copy_multi_diff.copy:
     src: ubuntu.sources
     dest: /etc/apt/sources.list.d/ubuntu.sources
   register: ubuntu_sources
-
-- name: nosnapd
-  import_tasks: nosnapd.yml
-  tags: nosnapd
 
 - name: apt update
   apt: { update_cache: true }
