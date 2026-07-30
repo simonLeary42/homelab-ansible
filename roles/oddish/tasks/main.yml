@@ -58,3 +58,7 @@
 - name: gitea
   import_tasks: gitea.yml
   tags: [gitea]
+
+- name: wireguard
+  import_tasks: wireguard.yml
+  tags: [wireguard]
