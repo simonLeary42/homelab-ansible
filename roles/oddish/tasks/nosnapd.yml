@@ -1,0 +1,45 @@
+- name: gather package facts
+  package_facts: {}
+
+- name: list installed snaps
+  shell: snap list | tail -n +2 | awk '{print $1}'
+  register: snap_list
+  check_mode: false
+  changed_when: false
+  when: "'snapd' in ansible_facts.packages"
+
+- name: uninstall installed snaps (but not snapd)
+  community.general.snap:
+    name: "{{ snap_list.stdout_lines | difference(['snapd']) }}"
+    state: absent
+  when: (snap_list.stdout_lines | default([]) ) | length > 0
+
+- name: snap uninstall snapd
+  community.general.snap:
+    name: snapd
+    state: absent
+  when: "'snapd' in (snap_list.stdout_lines | default([]))"
+
+- name: apt purge snapd
+  apt:
+    name: snapd
+    state: absent
+    purge: true
+
+# https://askubuntu.com/a/76075
+- name: prevent snap from being installed in the future
+  unity.copy_multi_diff.copy:
+    content: |
+      # this file is managed by ansible
+      Package: snapd
+      Pin: release *
+      Pin-Priority: -1
+    dest: /etc/apt/preferences.d/nosnapd.pref
+    owner: root
+    group: root
+    mode: "0644"
+  register: apt_preferences_nosnapd
+
+- name: apt update
+  apt: { update_cache: true }
+  when: apt_preferences_nosnapd.changed

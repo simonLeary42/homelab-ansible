@@ -8,6 +8,10 @@
     dest: /etc/apt/sources.list.d/ubuntu.sources
   register: ubuntu_sources
 
+- name: nosnapd
+  import_tasks: nosnapd.yml
+  tags: nosnapd
+
 - name: apt update
   apt: { update_cache: true }
   when: ubuntu_sources.changed
