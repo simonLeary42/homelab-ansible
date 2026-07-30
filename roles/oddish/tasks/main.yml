@@ -2,9 +2,45 @@
   include_vars: secrets.yml
   tags: [always]
 
+- name: apt install
+  apt:
+    name:
+      - neovim
+      - xvfb # for headless firefox
+      - delta
+      - wireguard
+      - wpasupplicant # required for wifi
+      - net-tools
+      - python-is-python3
+
+- name: remove junk from MOTD
+  file:
+    path: "/etc/update-motd.d/{{ item }}"
+    state: absent
+  loop:
+    - 10-help-text
+    - 50-motd-news
+    - 90-updates-available
+    - 91-contract-ua-esm-status
+
 - name: set timezone
   community.general.timezone:
     name: America/New_York
+
+- name: update netplan config
+  unity.template_multi_diff.template:
+    src: netplan.yml.j2
+    dest: /etc/netplan/00-installer-config.yaml
+    owner: root
+    group: root
+    mode: "0600"
+  register: netplan_config
+  tags: [netplan]
+
+- name: netplan try && netplan apply
+  shell: netplan try && netplan apply
+  when: netplan_config.changed
+  tags: [netplan]
 
 - name: certbot
   import_tasks: certbot.yml

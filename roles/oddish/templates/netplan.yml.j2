@@ -1,0 +1,16 @@
+network:
+  ethernets:
+    enp1s0f0:
+      dhcp4: true
+      dhcp6: false
+      match:
+        macaddress: {{ ansible_enp1s0f0.macaddress }}
+      set-name: enp1s0f0
+  wifis:
+    wlp2s0:
+      dhcp4: true
+      dhcp6: false
+      access-points:
+        {{ wifi_ssid }}:
+          password: {{ wifi_password }}
+  version: 2
