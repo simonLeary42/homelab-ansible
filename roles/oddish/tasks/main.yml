@@ -1,6 +1,15 @@
+- name: setup secrets
+  include_vars: secrets.yml
+  tags: [always]
+
 - name: set timezone
   community.general.timezone:
     name: America/New_York
 
+- name: certbot
+  import_tasks: certbot.yml
+  tags: [certbot]
+
 - name: gitea
   import_tasks: gitea.yml
+  tags: [gitea]

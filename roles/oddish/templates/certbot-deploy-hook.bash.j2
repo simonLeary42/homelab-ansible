@@ -1,0 +1,28 @@
+#!/bin/bash
+{{ ansible_managed | comment }}
+
+echo "certbot deploy hook running..."
+echo "RENEWED_DOMAINS=${RENEWED_DOMAINS}"
+echo "RENEWED_LINEAGE=${RENEWED_LINEAGE}"
+
+{% if certbot_deploy_hook_copy | length > 0 %}
+IFS=, read -ra renewed_domains_arr <<< "$RENEWED_DOMAINS"
+for renewed_domain in "${renewed_domains_arr[@]}"; do
+{% for data in certbot_deploy_hook_copy %}
+    if [ "$renewed_domain" == "{{ data.domain }}" ]; then
+        (set -x; install -m 0600 -o "{{ data.owner }}" -g "{{ data.group }}" "${RENEWED_LINEAGE}/privkey.pem" "{{ data.dest }}/privkey.pem")
+        (set -x; install -m 0644 -o "{{ data.owner }}" -g "{{ data.group }}" "${RENEWED_LINEAGE}/fullchain.pem" "{{ data.dest }}/fullchain.pem")
+    fi
+{% endfor %}
+done
+{% endif %}
+
+{% if certbot_deploy_hook_restart_services | length > 0 %}
+for renewed_domain in "${renewed_domains_arr[@]}"; do
+{% for data in certbot_deploy_hook_restart_services %}
+    if [ "$renewed_domain" == "{{ data.domain }}" ]; then
+        (set -x; systemctl try-restart {{ data.services | map('quote') | join(' ') }})
+    fi
+{% endfor %}
+done
+{% endif %}

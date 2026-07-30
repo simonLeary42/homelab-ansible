@@ -37,9 +37,6 @@
     - /var/lib/gitea/data
     - /var/lib/gitea/log
 
-- name: setup secrets
-  include_vars: secrets.yml
-
 - name: install /etc/gitea/app.ini
   unity.template_multi_diff.template:
     src: gitea-app.ini.j2
