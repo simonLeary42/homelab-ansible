@@ -26,6 +26,8 @@
       - wpasupplicant # required for wifi
       - net-tools
       - python-is-python3
+      - jc
+      - bat
 
 - name: remove junk from MOTD
   file:
