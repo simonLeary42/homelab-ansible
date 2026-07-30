@@ -32,5 +32,5 @@
       - --standalone
       - -d
       - "{{ domain }}"
-      - --deploy-hook=usr/local/bin/certbot-deploy-hook.bash
+      - --deploy-hook=/usr/local/bin/certbot-deploy-hook-gitea.bash
     creates: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
