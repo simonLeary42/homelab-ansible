@@ -2,6 +2,16 @@
   include_vars: secrets.yml
   tags: [always]
 
+- name: overwrite /etc/apt/sources.list.d/ubuntu.sources
+  unity.copy_multi_diff.copy:
+    src: ubuntu.sources
+    dest: /etc/apt/sources.list.d/ubuntu.sources
+  register: ubuntu_sources
+
+- name: apt update
+  apt: { update_cache: true }
+  when: ubuntu_sources.changed
+
 - name: apt install
   apt:
     name:
