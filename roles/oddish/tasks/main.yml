@@ -28,6 +28,7 @@
       - python-is-python3
       - jc
       - bat
+      - firefox # gecko selenium webdriver for apartment bot
 
 - name: remove junk from MOTD
   file:
