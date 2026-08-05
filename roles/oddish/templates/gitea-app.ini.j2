@@ -18,10 +18,10 @@ LOG_SQL = false
 ROOT = /var/lib/gitea/data/gitea-repositories
 
 [server]
-SSH_DOMAIN = {{ ansible_default_ipv4.address }}
-DOMAIN = {{ ansible_default_ipv4.address }}
+SSH_DOMAIN = {{ domain }}
+DOMAIN = {{ domain }}
 HTTP_PORT = 3000
-ROOT_URL = https://{{ ansible_default_ipv4.address }}:3000/
+ROOT_URL = https://{{ domain }}:3000/
 APP_DATA_PATH = /var/lib/gitea/data
 DISABLE_SSH = false
 SSH_PORT = 22
