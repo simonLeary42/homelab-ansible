@@ -29,6 +29,9 @@
       - jc
       - bat
       - firefox # gecko selenium webdriver for apartment bot
+      - iotop
+      - iftop
+      - wavemon # top-like tool for wifi
 
 - name: remove junk from MOTD
   file:
