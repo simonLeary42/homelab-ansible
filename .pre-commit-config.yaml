@@ -44,20 +44,21 @@ repos:
       - id: check-xml
       - id: check-added-large-files
       - id: check-executables-have-shebangs
-  # TODO fix the many errors and enable this
-  # - repo: https://github.com/shellcheck-py/shellcheck-py.git
-  #   rev: v0.10.0.1
-  #   hooks:
-  #     - id: shellcheck
+  - repo: https://github.com/shellcheck-py/shellcheck-py.git
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.23.1
     hooks:
       - id: gitleaks
-  # TODO fix the many errors and enable this
-  # - repo: https://github.com/ansible/ansible-lint.git
-  #   rev: v24.10.0
-  #   hooks:
-  #     - id: ansible-lint
+  - repo: https://github.com/ansible/ansible-lint.git
+    rev: v26.6.0
+    hooks:
+      - id: ansible-lint
+        language_version: "3.12" # should match pyproject.toml
+        additional_dependencies:
+          - ansible-core<2.20 # should match pyproject.toml
 
   - repo: local
     hooks:

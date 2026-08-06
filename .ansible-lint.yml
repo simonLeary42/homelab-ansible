@@ -1,0 +1,14 @@
+exclude_paths:
+  - collections
+  - .pre-commit-config.yaml
+skip_list:
+  - fqcn[action-core]
+  - var-naming[no-role-prefix]
+  - name[casing]
+  - no-handler
+enable_list:
+  - empty-string-compare
+  - jinja-template-extension
+  - no-log-password
+  - no-same-owner
+offline: true

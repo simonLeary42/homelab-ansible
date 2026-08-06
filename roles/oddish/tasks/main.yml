@@ -32,6 +32,7 @@
       - iotop
       - iftop
       - wavemon # top-like tool for wifi
+      - nfs-common
 
 - name: remove junk from MOTD
   file:
@@ -59,6 +60,7 @@
 
 - name: netplan try && netplan apply
   shell: netplan try && netplan apply
+  changed_when: true
   when: netplan_config.changed
   tags: [netplan]
 
@@ -82,3 +84,18 @@
 - name: wireguard
   import_tasks: wireguard.yml
   tags: [wireguard]
+
+- name: ensure /mnt/bunker-synology-simon exists
+  file:
+    path: /mnt/bunker-synology-simon
+    state: directory
+    owner: simon
+    group: simon
+    mode: "0750"
+
+- name: NFS mount from bunker
+  ansible.posix.mount:
+    src: "BNKR-NAS:/simon"
+    path: /mnt/bunker-synology-simon
+    fstype: nfs
+    state: mounted

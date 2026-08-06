@@ -2,7 +2,9 @@
   package_facts: {}
 
 - name: list installed snaps
-  shell: snap list | tail -n +2 | awk '{print $1}'
+  shell: |
+    set -o pipefail
+    snap list | tail -n +2 | awk '{print $1}'
   register: snap_list
   check_mode: false
   changed_when: false
