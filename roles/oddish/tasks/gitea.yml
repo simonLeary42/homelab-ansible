@@ -21,6 +21,8 @@
     owner: root
     group: root
     mode: "0755"
+    checksum: sha256:3b190a162b90e3c94317b3354fca6c1fedd6fe1476e45088368f2ade97a0b01d
+    force: false
   notify: systemctl restart gitea
 
 - name: create gitea directories
