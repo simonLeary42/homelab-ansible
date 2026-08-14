@@ -6,3 +6,18 @@
   systemd_service:
     name: gitea
     state: restarted
+
+- name: systemctl restart dendrite
+  systemd_service:
+    name: dendrite
+    state: restarted
+
+- name: systemctl reload apache2
+  systemd_service:
+    name: apache2
+    state: reloaded
+
+- name: systemctl restart apache2
+  systemd_service:
+    name: apache2
+    state: restarted

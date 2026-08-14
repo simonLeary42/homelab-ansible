@@ -1,0 +1,133 @@
+# note: `dendrite-create-account -username simon -admin` done by hand
+- name: apt install golang
+  apt:
+    name: golang
+    state: present
+
+- name: dendrite group
+  group:
+    name: dendrite
+    system: true
+
+- name: dendrite user
+  user:
+    name: dendrite
+    home: /home/dendrite
+    password_lock: true
+    group: dendrite
+    comment: dendrite matrix server
+    shell: /bin/bash
+    system: true
+    state: present
+
+- name: check if dendrite installed
+  stat: { path: /usr/local/bin/dendrite }
+  register: usr_local_bin_dendrite
+
+- name: check dendrite version
+  command: /usr/local/bin/dendrite --version
+  register: installed_dendrite_version
+  changed_when: false
+  diff: false
+  when: usr_local_bin_dendrite.stat.exists
+
+- name: install/upgrade dendrite
+  when: (installed_dendrite_version | default(omit)) != dendrite_version
+  block:
+    - name: download and extract tarball
+      unarchive:
+        src: https://github.com/element-hq/dendrite/archive/refs/tags/v{{ dendrite_version }}.tar.gz
+        dest: /tmp/
+        remote_src: true
+      become: true
+      become_user: dendrite
+    - name: build from source
+      command:
+        cmd: go build -o bin/ ./cmd/...
+        chdir: "/tmp/dendrite-{{ dendrite_version }}"
+      changed_when: true
+      become: true
+      become_user: dendrite
+      # ansible-lint thinks this task is unconditional
+      # no-changed-when: Commands should not change things if nothing needs doing.
+      # noqa: no-changed-when
+    - name: slurp default config file
+      command: /tmp/dendrite-{{ dendrite_version }}/bin/generate-config
+      changed_when: false
+      diff: false
+      register: generate_config
+      become: true
+      become_user: dendrite
+    - name: overwrite local roles/oddish/templates/dendrite-config-default.yml
+      copy:
+        content: "{{ generate_config.stdout }}"
+        dest: roles/oddish/templates/dendrite-config-default.yml
+      delegate_to: localhost
+      # noqa: risky-file-permissions
+    - name: install dendrite binaries
+      copy:
+        src: "/tmp/dendrite-{{ dendrite_version }}/bin/{{ item.src }}"
+        dest: "/usr/local/bin/{{ item.dest }}"
+        owner: dendrite
+        group: root
+        mode: "0700"
+        remote_src: true
+      loop:
+        - src: dendrite
+          dest: dendrite
+        - src: create-account
+          dest: dendrite-create-account
+        - src: furl
+          dest: dendrite-furl
+        - src: generate-keys
+          dest: dendrite-generate-keys
+        - src: resolve-state
+          dest: dendrite-resolve-state
+      notify: systemctl restart dendrite
+
+- name: create dendrite runtime directory
+  file:
+    path: /var/lib/dendrite
+    state: directory
+    owner: dendrite
+    group: dendrite
+    mode: "0750"
+
+- name: install /etc/dendrite.yml
+  unity.template_multi_diff.template:
+    src: dendrite-config.yml.j2
+    dest: /etc/dendrite.yml
+    owner: dendrite
+    group: dendrite
+    mode: "0644"
+  notify: systemctl restart dendrite
+
+- name: symlink /var/lib/dendrite/dendrite.yml -> /etc/dendrite.yaml
+  file:
+    state: link
+    path: /var/lib/dendrite/dendrite.yaml
+    src: /etc/dendrite.yml
+
+- name: generate dendrite private key
+  command:
+    cmd: dendrite-generate-keys --private-key matrix_key.pem
+    chdir: /var/lib/dendrite
+    creates: /var/lib/dendrite/matrix_key.pem
+  become: true
+  become_user: dendrite
+
+- name: install dendrite systemd unit file
+  unity.copy_multi_diff.copy:
+    src: dendrite.service
+    dest: /etc/systemd/system/dendrite.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - systemctl daemon-reload
+    - systemctl restart dendrite
+
+- name: systemctl enable dendrite
+  systemd_service:
+    name: dendrite
+    enabled: true

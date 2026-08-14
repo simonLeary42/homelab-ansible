@@ -99,3 +99,11 @@
     path: /mnt/bunker-synology-simon
     fstype: nfs
     state: mounted
+
+- name: dendrite
+  import_tasks: dendrite.yml
+  tags: [dendrite]
+
+- name: apache
+  import_tasks: apache.yml
+  tags: [apache]

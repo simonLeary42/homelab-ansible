@@ -18,7 +18,7 @@
         dest: /var/lib/gitea/ssl
     certbot_deploy_hook_restart_services:
       - domain: "{{ domain }}"
-        services: [gitea]
+        services: [gitea, apache2]
 
 - name: ensure certificate exists
   command:

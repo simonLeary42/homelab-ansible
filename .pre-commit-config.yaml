@@ -22,6 +22,7 @@ repos:
     hooks:
       - id: prettier
         types: [yaml]
+        exclude: roles/oddish/templates/dendrite-config-default.yml
   # - repo: https://github.com/psf/black.git
   #   rev: 24.10.0
   #   hooks:
@@ -56,9 +57,10 @@ repos:
   - repo: local
     hooks:
       - id: ansible-lint
-        name: ansible-lint
+        name: uv run ansible-lint
         language: system
-        entry: ansible-lint
+        entry: uv
+        args: [run, ansible-lint]
         pass_filenames: false
         always_run: true
       - id: mode-must-be-quoted

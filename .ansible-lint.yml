@@ -1,6 +1,7 @@
 exclude_paths:
   - collections
   - .pre-commit-config.yaml
+  - roles/oddish/templates/dendrite-config-default.yml
 skip_list:
   - fqcn[action-core]
   - var-naming[no-role-prefix]

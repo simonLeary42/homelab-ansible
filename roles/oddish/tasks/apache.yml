@@ -1,0 +1,45 @@
+- name: install apache2
+  apt:
+    name: apache2
+    state: present
+  notify: systemctl restart apache2
+
+- name: systemctl enable apache2
+  systemd_service:
+    name: apache2
+    enabled: true
+
+- name: a2dissite 000-default
+  command:
+    cmd: a2dissite 000-default
+    removes: /etc/apache2/sites-enabled/000-default.conf
+
+- name: a2enmod
+  command:
+    cmd: a2enmod {{ item }}
+    creates: /etc/apache2/mods-enabled/{{ item }}.load
+  loop:
+    - ssl
+    - headers
+    - proxy
+  notify: systemctl restart apache2
+
+- name: install /etc/apache2/sites-available/oddish.conf
+  unity.template_multi_diff.template:
+    src: apache.conf.j2
+    dest: /etc/apache2/sites-available/oddish.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl reload apache2
+
+- name: a2ensite oddish.conf
+  command:
+    cmd: a2ensite oddish.conf
+    creates: /etc/apache2/sites-enabled/oddish.conf
+
+- name: ensure port 8448 added to /etc/apache2/ports.conf
+  lineinfile:
+    line: Listen 8448
+    path: /etc/apache2/ports.conf
+  notify: systemctl restart apache2
