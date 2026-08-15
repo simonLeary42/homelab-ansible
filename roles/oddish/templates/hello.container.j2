@@ -4,5 +4,9 @@ Description=hello world
 [Container]
 ContainerName=hello
 Image=hello
-UIDMap={{ uidmap }}
-GIDMap={{ gidmap }}
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}

@@ -50,6 +50,6 @@
   command: systemctl --user -M simon@ restart hello2
   changed_when: true
 
-- name: systemctl --user -M hookshot@ restart hookshot
-  command: systemctl --user -M hookshot@ restart hookshot
+- name: systemctl --user -M hookshot@ restart matrix-hookshot
+  command: systemctl --user -M hookshot@ restart matrix-hookshot
   changed_when: true

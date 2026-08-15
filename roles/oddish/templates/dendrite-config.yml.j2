@@ -52,7 +52,8 @@ app_service_api:
   disable_tls_validation: false
   legacy_auth: false
   legacy_paths: false
-  config_files: []
+  config_files:
+    - /etc/matrix-hookshot/registration.yml
 client_api:
   registration_disabled: true
   registration_requires_token: false

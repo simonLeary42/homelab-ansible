@@ -1,0 +1,51 @@
+# NOTE: podman-related hookshot tasks are in tasks/podman.yml, not tasks/hookshot.yml
+
+- name: create the hookshot group
+  ansible.builtin.group:
+    name: hookshot
+    system: true
+    state: present
+
+- name: create the hookshot user account
+  ansible.builtin.user:
+    name: hookshot
+    group: hookshot
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: true
+    state: present
+
+- name: setup /etc/matrix-hookshot
+  unity.file_multi_diff.file:
+    path: /etc/matrix-hookshot
+    state: directory
+    owner: hookshot
+    group: hookshot
+    mode: "0755"
+
+- name: install /etc/matrix-hookshot/registration.yml
+  unity.template_multi_diff.template:
+    src: matrix-hookshot-registration.yml.j2
+    dest: /etc/matrix-hookshot/registration.yml
+    owner: hookshot
+    group: hookshot
+    mode: "0644"
+  notify: systemctl --user -M hookshot@ restart matrix-hookshot
+
+- name: install /etc/matrix-hookshot/config.yml
+  unity.template_multi_diff.template:
+    src: matrix-hookshot-config.yml.j2
+    dest: /etc/matrix-hookshot/config.yml
+    owner: hookshot
+    group: hookshot
+    mode: "0644"
+  notify: systemctl --user -M hookshot@ restart matrix-hookshot
+
+- name: install /etc/matrix-hookshot/passkey.pem
+  unity.copy_multi_diff.copy:
+    src: matrix-hookshot-passkey.pem
+    dest: /etc/matrix-hookshot/passkey.pem
+    owner: hookshot
+    group: hookshot
+    mode: "0640"
+  notify: systemctl --user -M hookshot@ restart matrix-hookshot

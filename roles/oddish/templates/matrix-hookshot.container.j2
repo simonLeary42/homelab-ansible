@@ -1,0 +1,21 @@
+[Unit]
+Description=hookshot matrix integrations
+
+[Container]
+ContainerName=matrix-hookshot
+Image=ghcr.io/matrix-org/matrix-hookshot:7.4.4
+PublishPort=9000:9000
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
+Volume=/etc/matrix-hookshot:/data
+Network=host
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

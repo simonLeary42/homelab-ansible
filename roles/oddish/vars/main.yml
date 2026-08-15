@@ -7,7 +7,7 @@ podman_containers:
     name: hello
     index: 0
   - user: hookshot
-    name: hookshot
+    name: matrix-hookshot
     index: 0
   - user: simon
     name: hello2

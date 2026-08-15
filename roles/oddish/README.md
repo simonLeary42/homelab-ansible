@@ -19,14 +19,18 @@ sudo -u hookshot XDG_RUNTIME_DIR=/run/user/995 /usr/lib/systemd/system-generator
 ```
 
 Each podman container is assigned a subordinate UIDnumber and GIDnumber namespace of size 65536.
-Each podman container should specify `UIDMap={{ uidmap }}` and `GIDMap={{ gidmap }}`.
+Each podman container should make use of the `{{ uidmap }}` and `{{ gidmap }}` variables.
+See `matrix-hookshot.container.j2` for an example.
 
-TODO:
+TODO: is this necessary?
+
 ```
 echo 'kernel.unprivileged_userns_clone=1' | sudo tee /etc/sysctl.d/userns.conf > /dev/null
 ```
-is this necessary?
 
 TODO: add users with container to systemd-journal group
 
 TODO: changed apparmor to complain-only mode for unprivileged user namespace creation
+* also installed app armor utils
+
+TODO: matrix-hookshot: You have not configured any permissions for the bridge, which by default means all users on spockroll.duckdns.org have admin levels of control. Please adjust your config.
