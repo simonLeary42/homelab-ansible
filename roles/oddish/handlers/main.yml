@@ -2,6 +2,14 @@
   systemd_service:
     daemon_reload: true
 
+- name: systemctl --user -M simon@ daemon-reload
+  command: systemctl --user -M simon@ daemon-reload
+  changed_when: true
+
+- name: systemctl --user -M hookshot@ daemon-reload
+  command: systemctl --user -M hookshot@ daemon-reload
+  changed_when: true
+
 - name: systemctl restart gitea
   systemd_service:
     name: gitea
@@ -21,3 +29,23 @@
   systemd_service:
     name: apache2
     state: restarted
+
+- name: systemctl --user -M simon@ restart hello-world
+  command: systemctl --user -M simon@ restart hello-world
+  changed_when: true
+
+- name: systemctl --user -M hookshot@ restart hookshot
+  command: systemctl --user -M hookshot@ restart hookshot
+  changed_when: true
+
+- name: sudo -u simon podman system migrate
+  command: podman system migrate
+  changed_when: true
+  become: true
+  become_user: simon
+
+- name: sudo -u hookshot podman system migrate
+  command: podman system migrate
+  changed_when: true
+  become: true
+  become_user: hookshot

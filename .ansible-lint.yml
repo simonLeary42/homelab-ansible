@@ -7,6 +7,7 @@ skip_list:
   - var-naming[no-role-prefix]
   - name[casing]
   - no-handler
+  - command-instead-of-module
 enable_list:
   - empty-string-compare
   - jinja-template-extension

@@ -33,6 +33,8 @@
       - iftop
       - wavemon # top-like tool for wifi
       - nfs-common
+      - podman
+      - uidmap # used with podman
 
 - name: remove junk from MOTD
   file:
@@ -107,3 +109,22 @@
 - name: apache
   import_tasks: apache.yml
   tags: [apache]
+
+- name: create the hookshot group
+  ansible.builtin.group:
+    name: hookshot
+    system: true
+    state: present
+
+- name: create the hookshot user account
+  ansible.builtin.user:
+    name: hookshot
+    group: hookshot
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: true
+    state: present
+
+- name: podman
+  import_tasks: podman.yml
+  tags: [podman]

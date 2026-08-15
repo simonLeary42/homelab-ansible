@@ -1,0 +1,14 @@
+[Unit]
+Description=hookshot matrix integrations
+
+[Container]
+ContainerName=hookshot
+Image=halfshot/matrix-hookshot:latest
+PublishPort=9000:9000
+UserNS=nomap
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

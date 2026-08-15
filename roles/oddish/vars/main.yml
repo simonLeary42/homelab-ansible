@@ -1,1 +1,6 @@
 dendrite_version: 0.15.2
+podman_containers:
+  - user: simon
+    name: hello-world
+  - user: hookshot
+    name: hookshot
