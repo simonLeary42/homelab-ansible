@@ -1,0 +1,69 @@
+# note: `register_new_matrix_user` done by hand to create admin user "simon"
+- name: create the synapse group
+  ansible.builtin.group:
+    name: synapse
+    system: true
+    state: present
+
+- name: create the synapse user account
+  ansible.builtin.user:
+    name: synapse
+    group: synapse
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: true
+    state: present
+
+- name: setup /etc/matrix-synapse
+  unity.file_multi_diff.file:
+    path: /etc/matrix-synapse
+    state: directory
+    owner: synapse
+    group: synapse
+    mode: "0750"
+
+- name: install /etc/matrix-synapse/homeserver.yaml
+  unity.template_multi_diff.template:
+    src: matrix-synapse-homeserver.yaml.j2
+    dest: /etc/matrix-synapse/homeserver.yaml
+    owner: synapse
+    group: synapse
+    mode: "0640"
+  notify: systemctl --user -M synapse@ restart matrix-synapse
+
+- name: install /etc/matrix-synapse/DOMAIN_NAME_HERE.log.config
+  unity.copy_multi_diff.copy:
+    src: matrix-synapse-log.config
+    dest: /etc/matrix-synapse/{{ domain }}.log.config
+    owner: synapse
+    group: synapse
+    mode: "0644"
+  notify: systemctl --user -M synapse@ restart matrix-synapse
+
+- name: install /etc/matrix-synapse/DOMAIN_NAME_HERE.signing.key
+  unity.copy_multi_diff.copy:
+    content: |
+      {{ synapse_signing_key }}
+    dest: /etc/matrix-synapse/{{ domain }}.signing.key
+    owner: synapse
+    group: synapse
+    mode: "0640"
+  notify: systemctl --user -M synapse@ restart matrix-synapse
+
+- name: setup /var/lib/matrix-synapse
+  unity.file_multi_diff.file:
+    path: /var/lib/matrix-synapse
+    state: directory
+    owner: synapse
+    group: synapse
+    mode: "0750"
+  notify: systemctl --user -M synapse@ restart matrix-synapse
+
+- name: setup /var/log/matrix-synapse
+  unity.file_multi_diff.file:
+    path: /var/log/matrix-synapse
+    state: directory
+    owner: synapse
+    group: synapse
+    mode: "0750"
+  notify: systemctl --user -M synapse@ restart matrix-synapse

@@ -1,0 +1,29 @@
+[Unit]
+Description=synapse matrix homeserver
+
+[Container]
+ContainerName=matrix-synapse
+Image=ghcr.io/element-hq/synapse:v1.158.0
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
+# PublishPort=8008:8008
+Network=host
+Volume=/etc/matrix-synapse:/etc/matrix-synapse
+Volume=/var/lib/matrix-synapse:/data
+Volume=/var/log/matrix-synapse:/var/log/matrix-synapse
+Environment=UID=0
+Environment=GID=0
+Environment=TZ=EST5EDT
+Environment=SYNAPSE_CONFIG_DIR=/etc/matrix-synapse
+
+[Service]
+# TODO re-enable restart
+# Restart=on-failure
+Restart=no
+
+[Install]
+WantedBy=default.target

@@ -102,9 +102,9 @@
     fstype: nfs
     state: mounted
 
-- name: dendrite
-  import_tasks: dendrite.yml
-  tags: [dendrite]
+- name: synapse
+  import_tasks: synapse.yml
+  tags: [synapse]
 
 - name: apache
   import_tasks: apache.yml

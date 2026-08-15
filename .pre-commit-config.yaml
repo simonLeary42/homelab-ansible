@@ -24,7 +24,7 @@ repos:
         types: [yaml]
         exclude: |
           (?x)^(
-            roles/oddish/templates/dendrite-config-default.yml|
+            roles/oddish/templates/matrix-synapse-homeserver-sample.yaml|
             roles/oddish/templates/hookshot-config.sample.yml|
           )$
   # - repo: https://github.com/psf/black.git
