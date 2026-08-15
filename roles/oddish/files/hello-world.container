@@ -1,6 +1,0 @@
-[Unit]
-Description=hello world
-
-[Container]
-ContainerName=hello-world
-Image=hello-world

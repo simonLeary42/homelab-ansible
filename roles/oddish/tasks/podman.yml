@@ -14,26 +14,41 @@
   notify: "{{ podman_containers | map(attribute='user') | map('regex_replace', '^(.*)$', 'sudo -u \\1 podman system migrate') }}"
 
 - name: getent passwd
-  getent:
-    database: passwd
+  getent: { database: passwd }
 
 - name: setup user-specific systemd containers directory
   unity.file_multi_diff.file:
-    path: "/etc/containers/systemd/users/{{ getent_passwd[item.user][1] }}"
+    path: "/etc/containers/systemd/users/{{ uid_number }}"
     state: directory
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
     mode: "0755"
   loop: "{{ podman_containers }}"
+  vars:
+    uid_number: "{{ getent_passwd[item.user][1] }}"
 
-- name: copy quadlet unit file
-  unity.copy_multi_diff.copy:
-    src: "{{ item.name }}.container"
-    dest: "/etc/containers/systemd/users/{{ getent_passwd[item.user][1] }}/{{ item.name }}.container"
-    owner: root
-    group: root
+- name: install container unit file
+  unity.template_multi_diff.template:
+    src: "{{ item.name }}.container.j2"
+    dest: "/etc/containers/systemd/users/{{ uid_number }}/{{ item.name }}.container"
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
     mode: "0644"
   loop: "{{ podman_containers }}"
+  loop_control:
+    extended: true
+  vars:
+    uid_number: "{{ getent_passwd[item.user][1] }}"
+    # podman ID mapping is tricky
+    # 0 -> real UID
+    # 1-63356 -> 1000000-10065535 (1st range in /etc/sub*id)
+    # 65537-131072 -> 2000000-20063355 (2nd range in /etc/sub*id)
+    # to show podman ID mapping: `podman unshare cat /proc/self/uid_map`
+    # make sure to `podman system migrate` after making any changes to /etc/sub*id
+    # the left columns form a contiguous range
+    # the 2nd number below corresponds to the left column
+    uidmap: "0:{{ 1 + 65536 * item.index }}:65535"
+    gidmap: "0:{{ 1 + 65536 * item.index }}:65535"
   notify: |
     {% set output = [] %}
     {% for podman_container in podman_containers %}
@@ -41,3 +56,9 @@
     {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ restart ' ~ podman_container.name) %}
     {% endfor %}
     {{ output }}
+
+- name: loginctl enable-linger
+  ansible.builtin.command:
+    cmd: loginctl enable-linger "{{ item.user }}"
+    creates: "/var/lib/systemd/linger/{{ item.user }}"
+  loop: "{{ podman_containers }}"

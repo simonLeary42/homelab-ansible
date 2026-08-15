@@ -3,9 +3,10 @@ Description=hookshot matrix integrations
 
 [Container]
 ContainerName=hookshot
-Image=halfshot/matrix-hookshot:latest
+Image=docker.io/halfshot/matrix-hookshot:latest
 PublishPort=9000:9000
-UserNS=nomap
+UIDMap={{ uidmap }}
+GIDMap={{ gidmap }}
 
 [Service]
 Restart=on-failure

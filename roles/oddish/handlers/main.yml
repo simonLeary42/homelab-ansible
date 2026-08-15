@@ -30,14 +30,6 @@
     name: apache2
     state: restarted
 
-- name: systemctl --user -M simon@ restart hello-world
-  command: systemctl --user -M simon@ restart hello-world
-  changed_when: true
-
-- name: systemctl --user -M hookshot@ restart hookshot
-  command: systemctl --user -M hookshot@ restart hookshot
-  changed_when: true
-
 - name: sudo -u simon podman system migrate
   command: podman system migrate
   changed_when: true
@@ -49,3 +41,15 @@
   changed_when: true
   become: true
   become_user: hookshot
+
+- name: systemctl --user -M simon@ restart hello
+  command: systemctl --user -M simon@ restart hello
+  changed_when: true
+
+- name: systemctl --user -M simon@ restart hello2
+  command: systemctl --user -M simon@ restart hello2
+  changed_when: true
+
+- name: systemctl --user -M hookshot@ restart hookshot
+  command: systemctl --user -M hookshot@ restart hookshot
+  changed_when: true

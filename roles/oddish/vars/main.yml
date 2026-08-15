@@ -1,6 +1,14 @@
 dendrite_version: 0.15.2
+# NOTE: each user needs to have their own handlers added to handlers/main.yml
+# NOTE: each container needs to have its own handler added to handlers/main.yml
+# NOTE: `index` must be incremented if there are multiple containers for the same user
 podman_containers:
   - user: simon
-    name: hello-world
+    name: hello
+    index: 0
   - user: hookshot
     name: hookshot
+    index: 0
+  - user: simon
+    name: hello2
+    index: 1
