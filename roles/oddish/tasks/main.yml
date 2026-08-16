@@ -35,6 +35,7 @@
       - nfs-common
       - podman
       - uidmap # used with podman
+      - ncdu
 
 - name: remove junk from MOTD
   file:
