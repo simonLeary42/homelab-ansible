@@ -6,6 +6,7 @@ network:
       match:
         macaddress: {{ ansible_enp1s0f0.macaddress }}
       set-name: enp1s0f0
+      optional: true
   wifis:
     wlp2s0:
       dhcp4: true
@@ -13,4 +14,5 @@ network:
       access-points:
         {{ wifi_ssid }}:
           password: {{ wifi_password }}
+      optional: false
   version: 2
