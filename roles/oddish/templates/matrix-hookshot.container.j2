@@ -4,7 +4,8 @@ Description=hookshot matrix integrations
 [Container]
 ContainerName=matrix-hookshot
 Image=ghcr.io/matrix-org/matrix-hookshot:7.4.4
-PublishPort=9000:9000
+# needs to be able to reach 127.0.0.1:8008 and also publish port 9000 and maybe publish others as well
+Network=host
 {% for _uidmap in uidmap %}
 UIDMap={{ _uidmap }}
 {% endfor %}
@@ -12,7 +13,6 @@ UIDMap={{ _uidmap }}
 GIDMap={{ _gidmap }}
 {% endfor %}
 Volume=/etc/matrix-hookshot:/data
-Network=host
 
 [Service]
 Restart=on-failure

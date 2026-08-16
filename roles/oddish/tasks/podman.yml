@@ -38,11 +38,13 @@
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
     uidmap:
+      # bidirectional real user <-> container root user
+      # allow container root user to access files in a volume owned by the real user
+      # make files created by container root user in a volume owned by the real user
       - "0:0:1"
+      # use this specific ID range from /etc/subuid
       - "1:{{ 1 + 65536 * item.index }}:65535"
-    gidmap:
-      - "0:0:1"
-      - "1:{{ 1 + 65536 * item.index }}:65535"
+    gidmap: "{{ uidmap }}"
   notify: |
     {% set output = [] %}
     {% for podman_container in podman_containers %}
@@ -50,6 +52,13 @@
     {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ restart ' ~ podman_container.name) %}
     {% endfor %}
     {{ output }}
+
+- name: validate container unit files
+  command: /usr/lib/systemd/system-generators/podman-system-generator --user --dryrun
+  become: true
+  become_user: "{{ item }}"
+  changed_when: false
+  loop: "{{ podman_containers | map(attribute=user) | unique }}"
 
 - name: loginctl enable-linger
   ansible.builtin.command:

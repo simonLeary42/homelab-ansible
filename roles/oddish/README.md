@@ -43,5 +43,3 @@ implicit uid_map example:
 
 * note: to show this implicit uid_map: `podman unshare cat /proc/self/uid_map`
 * note: make sure to `podman system migrate` after making any changes to /etc/subuid
-
-TODO: matrix-hookshot: You have not configured any permissions for the bridge, which by default means all users on spockroll.duckdns.org have admin levels of control. Please adjust your config.

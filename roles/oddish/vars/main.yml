@@ -1,6 +1,8 @@
 # NOTE: each user needs to have their own handlers added to handlers/main.yml
 # NOTE: each container needs to have its own handler added to handlers/main.yml
 # NOTE: `index` must be incremented if there are multiple containers for the same user
+# TODO: if an ID range is no longer going to be used, allow a `null`/`omit` value as placeholder
+#       to prevent another container from using those IDs
 podman_containers:
   - user: simon
     name: hello

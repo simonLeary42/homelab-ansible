@@ -8,11 +8,12 @@ Image=ghcr.io/element-hq/synapse:v1.158.0
 UIDMap={{ _uidmap }}
 {% endfor %}
 {% for _gidmap in gidmap %}
-GIDMap={{ _gidmap }}
+GiDMap={{ _gidmap }}
 {% endfor %}
 # PublishPort=8008:8008
 Network=host
 Volume=/etc/matrix-synapse:/etc/matrix-synapse
+Volume=/etc/matrix-hookshot:/etc/matrix-hookshot
 Volume=/var/lib/matrix-synapse:/data
 Volume=/var/log/matrix-synapse:/var/log/matrix-synapse
 Environment=UID=0
