@@ -10,7 +10,8 @@ UIDMap={{ _uidmap }}
 {% for _gidmap in gidmap %}
 GIDMap={{ _gidmap }}
 {% endfor %}
-PublishPort=9090:9090
+# needs to connect to localhost:9100
+Network=host
 Volume=/etc/prometheus:/etc/prometheus
 Volume=/var/lib/prometheus:/prometheus
 User=0
