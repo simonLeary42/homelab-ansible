@@ -97,7 +97,7 @@
 
 - name: NFS mount from bunker
   ansible.posix.mount:
-    src: "BNKR-NAS:/simon"
+    src: "BNKR-NAS:/volume1/simon"
     path: /mnt/bunker-synology-simon
     fstype: nfs
     state: mounted
