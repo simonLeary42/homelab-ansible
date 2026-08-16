@@ -32,9 +32,9 @@
     name: apache2
     state: reloaded
 
-- name: systemctl restart apache2
+- name: systemctl restart node_exporter
   systemd_service:
-    name: apache2
+    name: node_exporter
     state: restarted
 
 - name: sudo -u simon podman system migrate

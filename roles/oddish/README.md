@@ -15,6 +15,8 @@ Configured internally:
 * wireguard
 * apache2 (proxy for matrix-synapse)
 * podman, UID namespaces
+* prometheus
+* prometheus node exporter
 
 TODO:
 * NFS mount from bunker
@@ -33,6 +35,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `certbot`
 * `gitea`
 * `hookshot`
+* `node_exporter`
 * `nosnapd`
 * `podman`
 * `prometheus`

@@ -1,3 +1,4 @@
+node_exporter_version: 1.12.1
 # NOTE: each user needs to have their own handlers added to handlers/main.yml
 # NOTE: each container needs to have its own handler added to handlers/main.yml
 # NOTE: `index` must be incremented if there are multiple containers for the same user

@@ -1,0 +1,62 @@
+- name: node_exporter group
+  group:
+    name: node_exporter
+    system: true
+
+- name: node_exporter user
+  user:
+    name: node_exporter
+    home: /home/node_exporter
+    password_lock: true
+    group: node_exporter
+    shell: /bin/bash
+    system: true
+    state: present
+
+- name: check if node_exporter installed
+  stat: { path: /usr/local/bin/node_exporter }
+  register: usr_local_bin_node_exporter
+
+# FIXME strip down stdout to just the version number before comparison
+- name: check node_exporter version
+  command: /usr/local/bin/node_exporter --version
+  register: installed_node_exporter_version
+  changed_when: false
+  diff: false
+  when: usr_local_bin_node_exporter.stat.exists
+
+- name: install/upgrade node_exporter
+  when: (installed_node_exporter_version | default(omit)) != node_exporter_version
+  block:
+    - name: download and extract tarball
+      unarchive:
+        src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: /tmp/
+        remote_src: true
+      become: true
+      become_user: node_exporter
+    - name: copy node_exporter binary
+      copy:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        dest: /usr/local/bin/node_exporter
+        owner: node_exporter
+        group: root
+        mode: "0700"
+        remote_src: true
+      notify: systemctl restart node_exporter
+
+- name: install node_exporter systemd unit file
+  unity.copy_multi_diff.copy:
+    src: node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - systemctl daemon-reload
+    - systemctl restart node_exporter
+
+- name: systemctl enable node_exporter
+  systemd_service:
+    name: node_exporter
+    enabled: true

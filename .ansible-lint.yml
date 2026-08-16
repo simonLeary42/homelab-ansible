@@ -8,6 +8,7 @@ skip_list:
   - name[casing]
   - no-handler
   - command-instead-of-module
+  - yaml[line-length]
 enable_list:
   - empty-string-compare
   - jinja-template-extension
