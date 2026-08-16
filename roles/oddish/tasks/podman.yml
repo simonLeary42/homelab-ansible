@@ -35,8 +35,6 @@
     group: "{{ item.user }}"
     mode: "0644"
   loop: "{{ podman_containers }}"
-  loop_control:
-    extended: true
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
     # podman rootless UID mapping is tricky
