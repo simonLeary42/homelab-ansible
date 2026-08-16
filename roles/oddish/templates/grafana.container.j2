@@ -10,7 +10,8 @@ UIDMap={{ _uidmap }}
 {% for _gidmap in gidmap %}
 GIDMap={{ _gidmap }}
 {% endfor %}
-PublishPort=3000:3000
+# needs to expose port 3000 and also reach prometheus
+Network=host
 Volume=/etc/grafana:/etc/grafana
 Volume=/var/lib/grafana:/var/lib/grafana
 Volume=/var/log/grafana:/var/log/grafana
