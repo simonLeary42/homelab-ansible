@@ -86,3 +86,24 @@ implicit uid_map example:
 
 * note: to show this implicit uid_map: `podman unshare cat /proc/self/uid_map`
 * note: make sure to `podman system migrate` after making any changes to /etc/subuid
+
+### debugging rootless podman containers
+
+Here is an example where the `grafana` container failed due to permission denied on its config file:
+
+```console
+grafana@oddish:~$ systemctl --user status grafana | grep ExecStart
+    Process: 13044 ExecStart=/usr/bin/podman run --name grafana --replace --rm --cgroups=split --sdnotify=conmon -d --uidmap 0:0:1 --uidmap 1:1:65535 --gidmap 0:0:1 --gidmap 1:1:65535 -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana -v /var/log/grafana:/var/log/grafana --publish 3000:3000 docker.io/grafana/grafana:13.1.3 (code=exited, status=1/FAILURE)
+grafana@oddish:~$ /usr/bin/podman run --uidmap 0:0:1 --uidmap 1:1:65535 --gidmap 0:0:1 --gidmap 1:1:65535 -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana -v /var/log/grafana:/var/log/grafana --publish 3000:3000 --entrypoint /bin/sh docker.io/grafana/grafana:13.1.3 -c 'stat /etc/grafana/grafana.ini'
+  File: /etc/grafana/grafana.ini
+  Size: 1156            Blocks: 8          IO Block: 4096   regular file
+Device: fc00h/64512d    Inode: 1310775     Links: 1
+Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2026-08-16 19:55:17.729561731 +0000
+Modify: 2026-08-16 19:55:17.341563702 +0000
+Change: 2026-08-16 19:55:17.730563332 +0000
+```
+
+I get the exact `podman` command from `systemctl status`, and I modify it to remove some args and change the entrypoint to `stat` the config file instead.
+I can then confirm that the config file is owned as `root` inside the container.
+The fix for this particular problem was to make sure the container ran as its fake `root` user.
