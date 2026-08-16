@@ -3,15 +3,17 @@
     name: prometheus
     system: true
 
-- name: prometheus user
+- name: prometheus user (parity with `simon-prometheus` user on BNKR-NAS)
   user:
     name: prometheus
     home: /home/prometheus
     password_lock: true
     group: prometheus
+    groups: ["{{ bnkr_nas_simon_shared_folder_access_group_gid }}"]
     comment: prometheus
     shell: /bin/bash
     system: true
+    uid: "{{ bnkr_nas_simon_prometheus_user_uid }}"
     state: present
 
 - name: setup /etc/prometheus/

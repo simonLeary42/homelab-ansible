@@ -1,0 +1,34 @@
+# NOTE: tasks/prometheus.yml makes sure prometheus matches {{ bnkr_nas_simon_prometheus_uid_number }}
+#       and is in group "{{ bnkr_nas_simon_shared_folder_access_group_gid_number }}"
+
+- name: setup group bnkr-nas-simon-shared-folder-access (parity with BNKR-NAS group)
+  group:
+    name: bnkr-nas-simon-shared-folder-access
+    gid: "{{ bnkr_nas_simon_shared_folder_access_group_gid_number }}"
+    state: present
+
+- name: setup user bnkr-nas-simon (parity with BNKR-NAS user)
+  user:
+    name: bnkr-nas-simon
+    home: /nonexistent
+    password_lock: true
+    group: bnkr-nas-simon-shared-folder-access
+    shell: /usr/sbin/nologin
+    system: true
+    uid: "{{ bnkr_nas_simon_user_uid_number }}"
+    state: present
+
+- name: ensure /mnt/bunker-synology-simon exists
+  file:
+    path: /mnt/bunker-synology-simon
+    state: directory
+    owner: bnkr-nas-simon
+    group: bnkr-nas-simon-shared-folder-access
+    mode: "0770"
+
+- name: NFS mount from bunker
+  ansible.posix.mount:
+    src: "BNKR-NAS:/volume1/simon"
+    path: /mnt/bunker-synology-simon
+    fstype: nfs
+    state: mounted

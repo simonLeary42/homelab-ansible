@@ -87,20 +87,9 @@
   import_tasks: wireguard.yml
   tags: [wireguard]
 
-- name: ensure /mnt/bunker-synology-simon exists
-  file:
-    path: /mnt/bunker-synology-simon
-    state: directory
-    owner: simon
-    group: simon
-    mode: "0750"
-
-- name: NFS mount from bunker
-  ansible.posix.mount:
-    src: "BNKR-NAS:/volume1/simon"
-    path: /mnt/bunker-synology-simon
-    fstype: nfs
-    state: mounted
+- name: bnkr_nfs
+  import_tasks: bnkr_nfs.yml
+  tags: [bnkr_nfs]
 
 - name: synapse
   import_tasks: synapse.yml
