@@ -22,6 +22,10 @@
   command: systemctl --user -M prometheus@ daemon-reload
   changed_when: true
 
+- name: systemctl --user -M grafana@ daemon-reload
+  command: systemctl --user -M grafana@ daemon-reload
+  changed_when: true
+
 - name: systemctl restart gitea
   systemd_service:
     name: gitea
@@ -61,6 +65,12 @@
   become: true
   become_user: prometheus
 
+- name: sudo -u grafana podman system migrate
+  command: podman system migrate
+  changed_when: true
+  become: true
+  become_user: grafana
+
 - name: systemctl --user -M simon@ restart hello
   command: systemctl --user -M simon@ restart hello
   changed_when: true
@@ -71,6 +81,10 @@
 
 - name: systemctl --user -M prometheus@ restart prometheus
   command: systemctl --user -M prometheus@ restart prometheus
+  changed_when: true
+
+- name: systemctl --user -M grafana@ restart grafana
+  command: systemctl --user -M grafana@ restart grafana
   changed_when: true
 
 - name: systemctl --user -M synapse@ restart matrix-synapse

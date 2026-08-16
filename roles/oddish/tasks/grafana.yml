@@ -1,0 +1,14 @@
+- name: grafana group
+  group:
+    name: grafana
+    system: true
+
+- name: grafana user
+  user:
+    name: grafana
+    home: /home/grafana
+    password_lock: true
+    group: grafana
+    shell: /bin/bash
+    system: true
+    state: present

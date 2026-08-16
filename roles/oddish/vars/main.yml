@@ -20,3 +20,7 @@ podman_containers:
   - user: prometheus
     name: prometheus
     index: 0
+  - user: grafana
+    name: grafana
+    index: 0
+    requires_dockerhub_login: true

@@ -1,3 +1,28 @@
+- name: setup parent dir for container registry auth file
+  unity.file_multi_diff.file:
+    path: "/home/{{ item.user }}/.config/containers"
+    state: directory
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
+    mode: "0755"
+  loop: "{{ podman_containers }}"
+  when: item.requires_dockerhub_login | default(false)
+
+- name: install container registry auth file
+  unity.copy_multi_diff.copy:
+    content: "{{ data | to_nice_json ~ '\n' }}"
+    dest: "/home/{{ item.user }}/.config/containers/auth.json"
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
+    mode: "0600"
+  vars:
+    data:
+      auths:
+        docker.io:
+          auth: "{{ (podman_dockerhub_username ~ ':' ~ podman_dockerhub_token) | b64encode }}"
+  loop: "{{ podman_containers }}"
+  when: item.requires_dockerhub_login | default(false)
+
 - name: overwrite /etc/subuid, /etc/subgid
   unity.copy_multi_diff.copy:
     content: |

@@ -125,3 +125,7 @@
 - name: node_exporter
   import_tasks: node_exporter.yml
   tags: [node_exporter]
+
+- name: grafana
+  import_tasks: grafana.yml
+  tags: [grafana]

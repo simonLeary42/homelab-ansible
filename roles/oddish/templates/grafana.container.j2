@@ -1,0 +1,12 @@
+[Unit]
+Description=grafana
+
+[Container]
+ContainerName=grafana
+Image=docker.io/grafana/grafana:13.1.3
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
