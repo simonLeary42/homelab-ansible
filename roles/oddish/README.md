@@ -1,5 +1,26 @@
 # oddish
 
+Monolithic home server, named after the pokemon.
+
+Services exposed:
+* gitea
+* matrix-synapse
+* matrix-hookshot
+
+Configured internally:
+* apt sources
+* snapd is removed
+* certbot
+* dynamic DNS
+* wireguard
+* apache2 (proxy for matrix-synapse)
+* podman, UID namespaces
+
+TODO:
+* NFS mount from bunker
+* disk snapshots
+* backups to bunker
+
 ## podman containers
 
 Podman containers are run "rootless" by unprivileged users.
