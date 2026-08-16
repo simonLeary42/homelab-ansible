@@ -21,6 +21,23 @@ TODO:
 * disk snapshots
 * backups to bunker
 
+## usage
+
+### variables
+
+At time of writing, all role variables are defined inside the role, and nothing is expected to be defined at a host/group level.
+
+### tags
+
+* `apache`
+* `certbot`
+* `gitea`
+* `hookshot`
+* `nosnapd`
+* `podman`
+* `synapse`
+* `wireguard`
+
 ## podman containers
 
 Podman containers are run "rootless" by unprivileged users.
