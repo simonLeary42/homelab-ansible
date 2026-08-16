@@ -22,9 +22,7 @@ Environment=TZ=EST5EDT
 Environment=SYNAPSE_CONFIG_DIR=/etc/matrix-synapse
 
 [Service]
-# TODO re-enable restart
-# Restart=on-failure
-Restart=no
+Restart=on-failure
 
 [Install]
 WantedBy=default.target
