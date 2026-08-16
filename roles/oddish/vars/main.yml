@@ -16,3 +16,6 @@ podman_containers:
   - user: synapse
     name: matrix-synapse
     index: 0
+  - user: prometheus
+    name: prometheus
+    index: 0

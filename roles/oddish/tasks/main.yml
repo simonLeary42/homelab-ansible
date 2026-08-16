@@ -114,6 +114,10 @@
   import_tasks: hookshot.yml
   tags: [hookshot]
 
+- name: prometheus
+  import_tasks: prometheus.yml
+  tags: [prometheus]
+
 - name: podman
   import_tasks: podman.yml
   tags: [podman]

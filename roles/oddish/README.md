@@ -35,6 +35,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `hookshot`
 * `nosnapd`
 * `podman`
+* `prometheus`
 * `synapse`
 * `wireguard`
 

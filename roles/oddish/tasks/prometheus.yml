@@ -1,0 +1,41 @@
+- name: prometheus group
+  group:
+    name: prometheus
+    system: true
+
+- name: prometheus user
+  user:
+    name: prometheus
+    home: /home/prometheus
+    password_lock: true
+    group: prometheus
+    comment: prometheus
+    shell: /bin/bash
+    system: true
+    state: present
+
+- name: setup /etc/prometheus
+  unity.file_multi_diff.file:
+    path: /etc/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: "0755"
+
+- name: install /etc/prometheus/prometheus.yml
+  unity.template_multi_diff.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+    mode: "0644"
+  notify: systemctl --user -M prometheus@ restart prometheus
+
+- name: setup /var/lib/prometheus
+  unity.file_multi_diff.file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: "0750"
+  notify: systemctl --user -M prometheus@ restart prometheus

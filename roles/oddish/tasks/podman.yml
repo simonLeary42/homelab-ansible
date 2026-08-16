@@ -58,7 +58,7 @@
   become: true
   become_user: "{{ item }}"
   changed_when: false
-  loop: "{{ podman_containers | map(attribute=user) | unique }}"
+  loop: "{{ podman_containers | map(attribute='user') | unique }}"
 
 - name: loginctl enable-linger
   ansible.builtin.command:

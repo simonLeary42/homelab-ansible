@@ -1,0 +1,20 @@
+[Unit]
+Description=prometheus
+
+[Container]
+ContainerName=prometheus
+Image=ghcr.io/prometheus/prometheus-linux-amd64:main
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
+PublishPort=9090:9090
+Volume=/etc/prometheus:/etc/prometheus
+Volume=/var/lib/prometheus:/prometheus
+User=0
+Group=0
+
+[Install]
+WantedBy=default.target
