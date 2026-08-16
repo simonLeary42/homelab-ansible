@@ -39,15 +39,17 @@
     extended: true
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
-    gid_number: "{{ getent_group[item.user][1] }}"
-    # podman ID mapping is tricky
-    # 0 -> real UID (and vice-versa)
-    # 1-63356 -> 1000000-10065535 (1st range in /etc/sub*id)
-    # 65537-131072 -> 2000000-20063355 (2nd range in /etc/sub*id)
-    # to show podman ID mapping: `podman unshare cat /proc/self/uid_map`
-    # make sure to `podman system migrate` after making any changes to /etc/sub*id
-    # the left columns form a contiguous range
-    # the 2nd number below corresponds to the left column
+    # podman rootless UID mapping is tricky
+    # https://docs.podman.io/en/latest/markdown/podman-run.1.html#uidmap-flags-container-uid-from-uid-amount
+    # podman automatically builds its uid_map based on /etc/subuid before the --uidmap argument takes effect
+    # the --uidmap argument maps container UIDs to the "intermediate UIDs" that were created in this implicit uid_map
+    # and then intermediate UIDs are mapped to real UIDs
+    # implicit uid_map example:
+    # 0 -> real UID of whoever called the `podman` command
+    # 1-63356 -> 1000000-10065535 (1st range in /etc/subuid)
+    # 65537-131072 -> 2000000-20063355 (2nd range in /etc/subuid)
+    # note: to show this implicit uid_map: `podman unshare cat /proc/self/uid_map`
+    # note: make sure to `podman system migrate` after making any changes to /etc/subuid
     uidmap:
       - "0:0:1"
       - "1:{{ 1 + 65536 * item.index }}:65535"
