@@ -15,7 +15,7 @@
     create_home: true
     state: present
 
-- name: setup /etc/matrix-hookshot
+- name: setup /etc/matrix-hookshot/
   unity.file_multi_diff.file:
     path: /etc/matrix-hookshot
     state: directory

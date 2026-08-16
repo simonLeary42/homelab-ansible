@@ -17,6 +17,7 @@ Configured internally:
 * podman, UID namespaces
 * prometheus
 * prometheus node exporter
+* grafana
 
 TODO:
 * NFS mount from bunker
@@ -56,7 +57,7 @@ sudo -u hookshot XDG_RUNTIME_DIR=/run/user/995 /usr/lib/systemd/system-generator
 To manage a user service as root:
 
 ```shell
-systemctl --user -M CONTAINER_USER@ status CONTAINER_NAME`
+systemctl --user -M CONTAINER_USER@ status CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ start CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ stop CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ restart CONTAINER_NAME

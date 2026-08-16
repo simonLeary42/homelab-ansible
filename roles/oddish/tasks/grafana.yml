@@ -12,3 +12,39 @@
     shell: /bin/bash
     system: true
     state: present
+
+- name: setup /etc/grafana/
+  unity.file_multi_diff.file:
+    path: /etc/grafana
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: "0755"
+  notify: systemctl --user -M grafana@ restart grafana
+
+- name: setup /var/lib/grafana/
+  unity.file_multi_diff.file:
+    path: /var/lib/grafana
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: "0755"
+  notify: systemctl --user -M grafana@ restart grafana
+
+- name: setup /var/log/grafana/
+  unity.file_multi_diff.file:
+    path: /var/log/grafana
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: "0755"
+  notify: systemctl --user -M grafana@ restart grafana
+
+- name: install /etc/grafana/grafana.ini
+  unity.template_multi_diff.template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: grafana
+    group: grafana
+    mode: "0600"
+  notify: systemctl --user -M grafana@ restart grafana

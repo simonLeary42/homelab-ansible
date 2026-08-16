@@ -14,7 +14,7 @@
     create_home: true
     state: present
 
-- name: setup /etc/matrix-synapse
+- name: setup /etc/matrix-synapse/
   unity.file_multi_diff.file:
     path: /etc/matrix-synapse
     state: directory
@@ -50,7 +50,7 @@
     mode: "0640"
   notify: systemctl --user -M synapse@ restart matrix-synapse
 
-- name: setup /var/lib/matrix-synapse
+- name: setup /var/lib/matrix-synapse/
   unity.file_multi_diff.file:
     path: /var/lib/matrix-synapse
     state: directory
@@ -59,7 +59,7 @@
     mode: "0750"
   notify: systemctl --user -M synapse@ restart matrix-synapse
 
-- name: setup /var/log/matrix-synapse
+- name: setup /var/log/matrix-synapse/
   unity.file_multi_diff.file:
     path: /var/log/matrix-synapse
     state: directory

@@ -46,6 +46,7 @@
     owner: git
     group: git
     mode: "0600"
+  notify: systemctl restart gitea
 
 - name: install gitea systemd service unit file
   unity.copy_multi_diff.copy:

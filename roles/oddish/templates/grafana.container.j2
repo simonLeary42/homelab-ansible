@@ -10,3 +10,9 @@ UIDMap={{ _uidmap }}
 {% for _gidmap in gidmap %}
 GIDMap={{ _gidmap }}
 {% endfor %}
+PublishPort=3000:3000
+Volume=/etc/grafana:/etc/grafana
+Volume=/var/lib/grafana:/var/lib/grafana
+Volume=/var/log/grafana:/var/log/grafana
+User=0
+Group=0

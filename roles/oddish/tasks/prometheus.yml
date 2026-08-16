@@ -14,7 +14,7 @@
     system: true
     state: present
 
-- name: setup /etc/prometheus
+- name: setup /etc/prometheus/
   unity.file_multi_diff.file:
     path: /etc/prometheus
     state: directory
@@ -31,7 +31,7 @@
     mode: "0644"
   notify: systemctl --user -M prometheus@ restart prometheus
 
-- name: setup /var/lib/prometheus
+- name: setup /var/lib/prometheus/
   unity.file_multi_diff.file:
     path: /var/lib/prometheus
     state: directory

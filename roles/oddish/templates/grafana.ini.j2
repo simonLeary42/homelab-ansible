@@ -1,0 +1,46 @@
+instance_name = {{ domain }}
+
+[server]
+domain = {{ domain }}
+
+[analytics]
+reporting_enabled = false
+
+[security]
+secret_key = {{ grafana_secret_key }}
+
+[snapshots]
+# TODO do I want this?
+enabled = false
+
+[users]
+allow_sign_up = false
+
+[unified_alerting]
+# Comma-separated list of contact point integration types to allow. If left blank, all types are allowed.
+# Valid types: prometheus-alertmanager, dingding, discord, email, googlechat, jira, kafka,
+# mqtt, oncall, opsgenie, pagerduty, pushover, sensugo, slack, sns, teams, telegram,
+# threema, victorops, webex, webhook, wecom.
+allowed_integrations = webhook
+
+[unified_alerting.state_history.annotations]
+# TODO is this needed?
+# max_age =
+# max_annotations_to_keep =
+
+[unified_alerting.prometheus_conversion]
+# TODO is this needed?
+# rule_query_offset = 1m
+# default_datasource_uid =
+
+[recording_rules]
+# TODO is this needed?
+# enabled = true
+# timeout = 30s
+# default_datasource_uid =
+
+[public_dashboards]
+enabled = false
+
+[secrets_manager.encryption.secret_key.v1]
+secret_key = {{ grafana_secrets_manager_secret_key }}
