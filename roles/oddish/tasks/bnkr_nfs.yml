@@ -32,3 +32,4 @@
     path: /mnt/bunker-synology-simon
     fstype: nfs
     state: mounted
+    opts: "defaults,_netdev,x-systemd.requires=wg-quick@wg0.service,x-systemd.after=wg-quick@wg0.service,x-systemd.automount,nofail"
