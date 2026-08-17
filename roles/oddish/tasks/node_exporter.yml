@@ -17,16 +17,17 @@
   stat: { path: /usr/local/bin/node_exporter }
   register: usr_local_bin_node_exporter
 
-# FIXME strip down stdout to just the version number before comparison
 - name: check node_exporter version
-  command: /usr/local/bin/node_exporter --version
+  shell: |
+    set -o pipefail
+    node_exporter --version | head -n 1 | awk '{print $3}'
   register: installed_node_exporter_version
   changed_when: false
-  diff: false
+  check_mode: false
   when: usr_local_bin_node_exporter.stat.exists
 
 - name: install/upgrade node_exporter
-  when: (installed_node_exporter_version | default(omit)) != node_exporter_version
+  when: (installed_node_exporter_version.stdout | default("") | trim) != node_exporter_version
   block:
     - name: download and extract tarball
       unarchive:
