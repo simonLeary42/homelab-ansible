@@ -1,0 +1,25 @@
+- name: update netplan config
+  unity.template_multi_diff.template:
+    src: netplan.yml.j2
+    dest: /etc/netplan/00-installer-config.yaml
+    owner: root
+    group: root
+    mode: "0600"
+  register: netplan_config
+  tags: [netplan]
+
+- name: netplan try && netplan apply
+  shell: netplan try && netplan apply
+  changed_when: true
+  when: netplan_config.changed
+  tags: [netplan]
+
+- name: systemctl disable systemd-networkd-wait-online
+  systemd_service:
+    name: systemd-networkd-wait-online
+    enabled: false
+
+- name: systemctl enable systemd-networkd-wait-online@wlp2s0
+  systemd_service:
+    name: systemd-networkd-wait-online@wlp2s0
+    enabled: false
