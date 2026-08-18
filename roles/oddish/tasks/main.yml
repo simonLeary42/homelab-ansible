@@ -47,6 +47,11 @@
     - 90-updates-available
     - 91-contract-ua-esm-status
 
+- name: systemctl disable motd-news.timer
+  systemd_service:
+    name: motd-news.timer
+    enabled: false
+
 - name: set timezone
   community.general.timezone:
     name: America/New_York
