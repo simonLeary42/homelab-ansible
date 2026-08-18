@@ -116,3 +116,7 @@
 - name: grafana
   import_tasks: grafana.yml
   tags: [grafana]
+
+- name: tailscale
+  import_tasks: tailscale.yml
+  tags: [tailscale]
