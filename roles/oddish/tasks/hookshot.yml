@@ -30,7 +30,9 @@
     owner: hookshot
     group: hookshot
     mode: "0644"
-  notify: systemctl --user -M hookshot@ restart matrix-hookshot
+  notify:
+    - systemctl --user -M hookshot@ restart matrix-hookshot
+    - systemctl --user -M synapse@ restart matrix-synapse
 
 - name: install /etc/matrix-hookshot/config.yml
   unity.template_multi_diff.template:
