@@ -1,0 +1,42 @@
+- name: alertmanager group
+  group:
+    name: alertmanager
+    system: true
+
+- name: alertmanager user
+  user:
+    name: alertmanager
+    home: /home/alertmanager
+    password_lock: true
+    group: alertmanager
+    comment: alertmanager
+    shell: /bin/bash
+    system: true
+    state: present
+
+- name: setup /etc/alertmanager/
+  unity.file_multi_diff.file:
+    path: /etc/alertmanager
+    state: directory
+    owner: alertmanager
+    group: alertmanager
+    mode: "0755"
+  notify: systemctl --user -M alertmanager@ restart alertmanager
+
+- name: setup /etc/alertmanager/template
+  unity.file_multi_diff.file:
+    path: /etc/alertmanager/template
+    state: directory
+    owner: alertmanager
+    group: alertmanager
+    mode: "0755"
+  notify: systemctl --user -M alertmanager@ restart alertmanager
+
+- name: install /etc/alertmanager/alertmanager.yml
+  unity.template_multi_diff.template:
+    src: alertmanager.yml.j2
+    dest: /etc/alertmanager/alertmanager.yml
+    owner: alertmanager
+    group: alertmanager
+    mode: "0600"
+  notify: systemctl --user -M alertmanager@ restart alertmanager

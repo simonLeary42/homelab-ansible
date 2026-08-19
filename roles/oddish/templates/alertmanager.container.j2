@@ -1,0 +1,20 @@
+[Unit]
+Description=alertmanager
+
+[Container]
+ContainerName=alertmanager
+Image=ghcr.io/prometheus/alertmanager-linux-amd64:v0.34.0
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
+# needs to expose port 9093 and also talk to hookshot
+Network=host
+Volume=/etc/alertmanager:/etc/alertmanager
+User=0
+Group=0
+
+[Install]
+WantedBy=default.target

@@ -4,7 +4,7 @@ RequiresMountsFor=/mnt/bunker-synology-simon/homelab
 
 [Container]
 ContainerName=prometheus
-Image=ghcr.io/prometheus/prometheus-linux-amd64:main
+Image=ghcr.io/prometheus/prometheus-linux-amd64:v3.14.0
 {% for _uidmap in uidmap %}
 UIDMap={{ _uidmap }}
 {% endfor %}

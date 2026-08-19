@@ -33,6 +33,14 @@
     mode: "0644"
   notify: systemctl --user -M prometheus@ restart prometheus
 
+- name: install /etc/prometheus/node_exporter_alerts.yml
+  get_url:
+    url: https://gist.githubusercontent.com/krisek/62a98e2645af5dce169a7b506e999cd8/raw/b67dd1dad1bcf2896f56dd02a657d8eac8e893ea/alert.rules.yml
+    dest: /etc/prometheus/node_exporter_alerts.yml
+    owner: prometheus
+    group: prometheus
+    mode: "0644"
+
 - name: setup /var/lib/prometheus/
   unity.file_multi_diff.file:
     path: /var/lib/prometheus

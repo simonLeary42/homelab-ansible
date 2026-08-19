@@ -24,3 +24,6 @@ podman_containers:
     name: grafana
     index: 0
     requires_dockerhub_login: true
+  - user: alertmanager
+    name: alertmanager
+    index: 0

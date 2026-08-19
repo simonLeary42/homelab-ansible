@@ -1,0 +1,34 @@
+# global:
+#   # The smarthost and SMTP sender used for mail notifications.
+#   smtp_smarthost: 'localhost:25'
+#   smtp_from: 'alertmanager@{{ domain }}'
+#   smtp_auth_username: 'alertmanager'
+#   smtp_auth_password: 'password'
+
+templates:
+  - '/etc/alertmanager/template/*.tmpl'
+
+# root route
+route:
+  group_by: [...]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: webhook_receiver
+  # child routes
+  routes: []
+
+# inhibit_rules:
+#   - source_matchers: [severity="critical"]
+#     target_matchers: [severity="warning"]
+#     # Apply inhibition if the alertname is the same.
+#     # CAUTION:
+#     #   If all label names listed in `equal` are missing
+#     #   from both the source and target alerts,
+#     #   the inhibition rule will apply!
+#     equal: [alertname, cluster, service]
+
+receivers:
+- name: webhook_receiver
+  webhook_configs:
+  - url: "{{ alertmanager_webhook }}"

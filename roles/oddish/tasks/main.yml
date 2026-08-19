@@ -105,6 +105,10 @@
   import_tasks: prometheus.yml
   tags: [prometheus]
 
+- name: alertmanager
+  import_tasks: alertmanager.yml
+  tags: [alertmanager]
+
 - name: podman
   import_tasks: podman.yml
   tags: [podman]

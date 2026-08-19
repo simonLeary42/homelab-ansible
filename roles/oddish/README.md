@@ -5,7 +5,6 @@ Monolithic home server, named after the pokemon.
 Services exposed:
 * gitea
 * matrix-synapse
-* matrix-hookshot
 
 Configured internally:
 * apt sources
@@ -13,10 +12,12 @@ Configured internally:
 * certbot
 * dynamic DNS
 * wireguard
+* matrix-hookshot
 * apache2 (proxy for matrix-synapse)
 * podman, UID namespaces
 * prometheus
 * prometheus node exporter
+* prometheus alert manager
 * grafana
 
 TODO:
@@ -32,6 +33,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 
 ### tags
 
+* `alertmanager`
 * `apache`
 * `certbot`
 * `gitea`
