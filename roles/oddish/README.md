@@ -112,6 +112,6 @@ Modify: 2026-08-16 19:55:17.341563702 +0000
 Change: 2026-08-16 19:55:17.730563332 +0000
 ```
 
-I get the exact `podman` command from `systemctl status`, and I modify it to remove some args and change the entrypoint to `stat` the config file instead.
+I get the exact `podman` command from `systemctl status`, and I modify it to remove the `-d` argument and change the entrypoint to `stat` the config file instead.
 I can then confirm that the config file is owned as `root` inside the container.
 The fix for this particular problem was to make sure the container ran as its fake `root` user.
