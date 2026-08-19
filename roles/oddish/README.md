@@ -49,6 +49,12 @@ At time of writing, all role variables are defined inside the role, and nothing 
 
 Podman containers are run "rootless" by unprivileged users.
 
+Unfortunately, rootless systemd-integrated podman containers must be in the `--user` scope, which can make them more annoying to work with:
+
+> Note that Quadlet units do not support running as a non-root user by defining the User, Group, or DynamicUser systemd options. If you want to run a rootless Quadlet, you will need to create the user and add the unit file to one of the above rootless unit search paths.
+
+https://github.com/podman-container-tools/podman/discussions/20573
+
 During `systemctl daemon-reload` (or `systemctl --user daemon-reload`), systemd reads `.container` files ([docs](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)) and feeds them through `podman-system-generator` to generate service unit files.
 If the `.container` file is invalid, no error will be shown during `daemon-reload`, so you must run the generator manually:
 
