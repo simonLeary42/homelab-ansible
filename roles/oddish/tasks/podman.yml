@@ -6,6 +6,7 @@
     group: "{{ item.user }}"
     mode: "0755"
   loop: "{{ podman_containers }}"
+  loop_control: { label: "{{ item.name }}" }
   when: item.requires_dockerhub_login | default(false)
 
 - name: install container registry auth file
@@ -21,6 +22,7 @@
         docker.io:
           auth: "{{ (podman_dockerhub_username ~ ':' ~ podman_dockerhub_token) | b64encode }}"
   loop: "{{ podman_containers }}"
+  loop_control: { label: "{{ item.name }}" }
   when: item.requires_dockerhub_login | default(false)
 
 - name: overwrite /etc/subuid, /etc/subgid
@@ -49,6 +51,7 @@
     group: "{{ item.user }}"
     mode: "0755"
   loop: "{{ podman_containers }}"
+  loop_control: { label: "{{ item.name }}" }
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
 
@@ -60,6 +63,7 @@
     group: "{{ item.user }}"
     mode: "0644"
   loop: "{{ podman_containers }}"
+  loop_control: { label: "{{ item.name }}" }
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
     uidmap:
@@ -90,3 +94,4 @@
     cmd: loginctl enable-linger "{{ item.user }}"
     creates: "/var/lib/systemd/linger/{{ item.user }}"
   loop: "{{ podman_containers }}"
+  loop_control: { label: "{{ item.name }}" }
