@@ -38,7 +38,14 @@
   loop:
     - /etc/subuid
     - /etc/subgid
-  notify: "{{ podman_containers | map(attribute='user') | map('regex_replace', '^(.*)$', 'sudo -u \\1 podman system migrate') }}"
+  register: _result
+  notify: |
+    {{
+      _result.results |
+      selectattr('changed', 'equalto', true) |
+      map(attribute='item') | map(attribute='user') |
+      map('regex_replace', '^(.*)$', 'sudo -u \\1 podman system migrate')
+    }}
 
 - name: getent passwd
   getent: { database: passwd }
@@ -74,11 +81,14 @@
       # use this specific ID range from /etc/subuid
       - "1:{{ 1 + 65536 * item.index }}:65535"
     gidmap: "{{ uidmap }}"
+  register: _result
   notify: |
     {% set output = [] %}
-    {% for podman_container in podman_containers %}
-    {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ daemon-reload') %}
-    {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ restart ' ~ podman_container.name) %}
+    {% for __result in _result.results %}
+    {% if __result.changed %}
+    {% set _ = output.append('systemctl --user -M ' ~ __result.item.user ~ '@ daemon-reload') %}
+    {% set _ = output.append('systemctl --user -M ' ~ __result.item.user ~ '@ restart ' ~ podman_container.name) %}
+    {% endif %}
     {% endfor %}
     {{ output }}
 
