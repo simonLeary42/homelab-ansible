@@ -82,12 +82,14 @@
     {% endfor %}
     {{ output }}
 
-- name: validate container unit files (only catches some errors)
+- name: validate container unit files
   command: /usr/lib/systemd/system-generators/podman-system-generator --user --dryrun
   become: true
   become_user: "{{ item }}"
   changed_when: false
   loop: "{{ podman_containers | map(attribute='user') | unique }}"
+  register: _result
+  failed_when: (_result.rc != 0) or ((_result.stdout | trim) == "")
 
 - name: loginctl enable-linger
   ansible.builtin.command:
