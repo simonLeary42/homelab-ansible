@@ -1,6 +1,6 @@
 id: matrix-hookshot # This can be anything, but must be unique within your homeserver
-as_token: aaaaaaaaaa # This again can be a random string
-hs_token: aaaaaaaaaa # ..as can this
+as_token: "{{ hookshot_as_token }}" # this can be used for HTTP bearer auth
+hs_token: "{{ hookshot_hs_token }}"
 namespaces:
   rooms: []
   users:
