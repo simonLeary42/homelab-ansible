@@ -82,7 +82,7 @@
     {% endfor %}
     {{ output }}
 
-- name: validate container unit files
+- name: validate container unit files (only catches some errors)
   command: /usr/lib/systemd/system-generators/podman-system-generator --user --dryrun
   become: true
   become_user: "{{ item }}"
