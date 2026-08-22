@@ -14,12 +14,19 @@
   when: netplan_config.changed
   tags: [netplan]
 
-- name: systemctl disable systemd-networkd-wait-online
-  systemd_service:
-    name: systemd-networkd-wait-online
-    enabled: false
-
-- name: systemctl enable systemd-networkd-wait-online@wlp2s0
-  systemd_service:
-    name: systemd-networkd-wait-online@wlp2s0
-    enabled: false
+# the default unit file includes two commands in series:
+# ExecStart=/lib/systemd/systemd-networkd-wait-online -i wlp2s0:degraded enp1s0f0:degraded
+# ExecStart=/lib/systemd/systemd-networkd-wait-online --any --dns -o routable -i wlp2s0 -i enp1s0f0
+# it waits for both ifaces to reach a degraded state before then waiting for either iface to come up fully
+# it blocks boot and it doesn't make sense to me, so I removed the first one
+- name: install override for systemd-networkd-wait-online
+  copy:
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/lib/systemd/systemd-networkd-wait-online --any --dns -o routable -i wlp2s0 -i enp1s0f0
+    dest: /etc/systemd/system/systemd-networkd-wait-online.service.d/override.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl daemon-reload
