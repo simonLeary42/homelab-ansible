@@ -101,10 +101,19 @@ sudo -u hookshot XDG_RUNTIME_DIR=/run/user/995 /usr/lib/systemd/system-generator
 To manage a user service as root:
 
 ```shell
-systemctl --user -M CONTAINER_USER@ status CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ start CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ stop CONTAINER_NAME
 systemctl --user -M CONTAINER_USER@ restart CONTAINER_NAME
+sudo -u CONTAINER_USER XDG_RUNTIME_DIR=/run/user/CONTAINER_USER_UID_NUMBER systemctl status CONTAINER_NAME
+```
+
+The helper script `su-systemctl` is provided, and can be used like this:
+
+```shell
+su-systemctl CONTAINER_USER start CONTAINER_NAME
+su-systemctl CONTAINER_USER stop CONTAINER_NAME
+su-systemctl CONTAINER_USER restart CONTAINER_NAME
+su-systemctl CONTAINER_USER status CONTAINER_NAME
 ```
 
 Podman sends the stdout/stderr from all containers to the journal by default.

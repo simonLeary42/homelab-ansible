@@ -47,3 +47,17 @@
     group: prometheus
     mode: "0750"
   notify: systemctl --user -M prometheus@ restart prometheus
+
+- name: install helper script
+  copy:
+    content: |
+      #!/bin/bash
+      user=$1
+      shift
+      uid="$(getent passwd "$user" | awk -F : '{print $3}')"
+      set -x
+      sudo -u "$user" XDG_RUNTIME_DIR="/run/user/$uid" systemctl --user "$@"
+    dest: /usr/local/sbin/su-systemctl
+    owner: root
+    group: root
+    mode: "0755"
