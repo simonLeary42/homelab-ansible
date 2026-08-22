@@ -3,8 +3,8 @@
 Monolithic home server, named after the pokemon.
 
 Services exposed:
-* gitea
-* matrix-synapse
+* gitea (port 3003)
+* matrix-synapse (port 8448)
 
 Configured internally:
 * apt sources
