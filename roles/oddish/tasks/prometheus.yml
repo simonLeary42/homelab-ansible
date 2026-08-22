@@ -9,11 +9,9 @@
     home: /home/prometheus
     password_lock: true
     group: prometheus
-    groups: ["{{ bnkr_nas_simon_shared_folder_access_group_gid_number }}"]
     comment: prometheus
     shell: /bin/bash
     system: true
-    uid: "{{ bnkr_nas_simon_prometheus_user_uid_number }}"
     state: present
 
 - name: setup /etc/prometheus/

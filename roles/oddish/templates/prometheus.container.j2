@@ -1,6 +1,5 @@
 [Unit]
 Description=prometheus
-RequiresMountsFor=/mnt/bunker-synology-simon/homelab
 
 [Container]
 ContainerName=prometheus
@@ -14,7 +13,7 @@ GIDMap={{ _gidmap }}
 # needs to connect to localhost:9100
 Network=host
 Volume=/etc/prometheus:/etc/prometheus
-Volume=/mnt/bunker-synology-simon/homelab/prometheus:/prometheus
+Volume=/var/lib/prometheus:/prometheus
 User=0
 Group=0
 
