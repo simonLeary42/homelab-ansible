@@ -19,6 +19,7 @@ Configured internally:
 * prometheus node exporter
 * prometheus alert manager
 * grafana
+* btrfs snapshots
 
 TODO:
 * NFS mount from bunker
@@ -44,6 +45,23 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `prometheus`
 * `synapse`
 * `wireguard`
+
+## manual gitea setup
+
+* TODO user creation
+
+## manual matrix setup
+
+* TODO user creation
+
+## manual prometheus settup
+
+* TODO user creation
+* TODO import node_exporter rules
+
+## manual grafana setup
+
+* TODO import dashboard "node exporter full"
 
 ## podman containers
 
@@ -115,3 +133,16 @@ Change: 2026-08-16 19:55:17.730563332 +0000
 I get the exact `podman` command from `systemctl status`, and I modify it to remove the `-d` argument and change the entrypoint to `stat` the config file instead.
 I can then confirm that the config file is owned as `root` inside the container.
 The fix for this particular problem was to make sure the container ran as its fake `root` user.
+
+## manual filesystem setup
+
+This role expects that btrfs subvolumes have already been created:
+* `@` mounted at `/`
+* `@home` mounted at `/home`
+
+At time of writing, the default ubuntu server installer does not create btrfs subvolumes.
+After formatting the rootfs as btrfs, you have to create the new subvolumes, copy all files from the root subvolume, modify `/etc/fstab`, potentially modify grub, and reboot.
+
+This role also expects that there is no active swap file on the `@` subvolume.
+This can be done by disabling swap or creating a `@swap` subvolume and configuring the system to use that instead of `/swap.img`.
+Helpful guide on creating a new swap file: https://askubuntu.com/a/1206161

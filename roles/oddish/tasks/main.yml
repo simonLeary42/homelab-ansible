@@ -37,6 +37,7 @@
       - uidmap # used with podman
       - ncdu
       - tree
+      - btrbk
 
 - name: remove junk from MOTD
   file:
@@ -125,3 +126,7 @@
 - name: tailscale
   import_tasks: tailscale.yml
   tags: [tailscale]
+
+- name: btrfs
+  import_tasks: btrfs.yml
+  tags: [btrfs]
