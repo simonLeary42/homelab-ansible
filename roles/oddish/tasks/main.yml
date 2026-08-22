@@ -28,7 +28,7 @@
       - python-is-python3
       - jc
       - bat
-      - firefox # gecko selenium webdriver for apartment bot
+      # - firefox # gecko selenium webdriver for apartment bot
       - iotop
       - iftop
       - wavemon # top-like tool for wifi
@@ -36,6 +36,7 @@
       - podman
       - uidmap # used with podman
       - ncdu
+      - tree
 
 - name: remove junk from MOTD
   file:
