@@ -1,6 +1,6 @@
 Types: deb
-# URIs: http://us.archive.ubuntu.com/ubuntu/
-URIs: https://mirror.pilotfiber.com/ubuntu/
+URIs: http://us.archive.ubuntu.com/ubuntu/
+# URIs: https://mirror.pilotfiber.com/ubuntu/
 Suites: resolute resolute-updates resolute-backports
 Components: main restricted universe multiverse
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg

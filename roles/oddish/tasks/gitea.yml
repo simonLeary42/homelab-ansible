@@ -52,7 +52,7 @@
   unity.copy_multi_diff.copy:
     src: gitea.service
     dest: /etc/systemd/system/gitea.service
-    user: root
+    owner: root
     group: root
     mode: "0644"
   notify:

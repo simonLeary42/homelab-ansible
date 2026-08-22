@@ -40,6 +40,11 @@
     name: apache2
     state: reloaded
 
+- name: systemctl restart apache2
+  systemd_service:
+    name: apache2
+    state: restarted
+
 - name: systemctl restart node_exporter
   systemd_service:
     name: node_exporter

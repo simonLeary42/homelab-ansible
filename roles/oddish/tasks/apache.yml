@@ -21,7 +21,7 @@
   loop:
     - ssl
     - headers
-    - proxy
+    - proxy_http
   notify: systemctl restart apache2
 
 - name: install /etc/apache2/sites-available/oddish.conf
