@@ -1,15 +1,15 @@
 ServerName {{ domain }}
 
-<VirtualHost *:80>
-    DocumentRoot /var/www/html
-</VirtualHost>
-
-<VirtualHost *:443>
-    DocumentRoot /var/www/html
-    SSLEngine on
-    SSLCertificateFile /etc/letsencrypt/live/{{ domain }}/fullchain.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/{{ domain }}/privkey.pem
-</VirtualHost>
+# <VirtualHost *:80>
+#     DocumentRoot /var/www/html
+# </VirtualHost>
+#
+# <VirtualHost *:443>
+#     DocumentRoot /var/www/html
+#     SSLEngine on
+#     SSLCertificateFile /etc/letsencrypt/live/{{ domain }}/fullchain.pem
+#     SSLCertificateKeyFile /etc/letsencrypt/live/{{ domain }}/privkey.pem
+# </VirtualHost>
 
 <VirtualHost *:8448>
     DocumentRoot /nonexistent

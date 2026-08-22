@@ -38,8 +38,12 @@
     cmd: a2ensite oddish.conf
     creates: /etc/apache2/sites-enabled/oddish.conf
 
-- name: ensure port 8448 added to /etc/apache2/ports.conf
-  lineinfile:
-    line: Listen 8448
-    path: /etc/apache2/ports.conf
+- name: install /etc/apache2/ports.conf
+  copy:
+    content: |
+      Listen 8448
+    dest: /etc/apache2/ports.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify: systemctl restart apache2
