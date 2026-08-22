@@ -20,6 +20,7 @@ Configured internally:
 * prometheus alert manager
 * grafana
 * btrfs snapshots
+* ssh
 
 TODO:
 * NFS mount from bunker
@@ -36,6 +37,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 
 * `alertmanager`
 * `apache`
+* `btrfs`
 * `certbot`
 * `gitea`
 * `hookshot`
@@ -43,6 +45,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `nosnapd`
 * `podman`
 * `prometheus`
+* `ssh`
 * `synapse`
 * `wireguard`
 

@@ -50,6 +50,11 @@
     name: node_exporter
     state: restarted
 
+- name: systemctl restart ssh
+  systemd_service:
+    name: ssh
+    state: restarted
+
 - name: sudo -u simon podman system migrate
   command: podman system migrate
   changed_when: true

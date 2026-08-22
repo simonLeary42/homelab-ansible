@@ -1,0 +1,19 @@
+- name: systemctl enable ssh
+  systemd_service:
+    name: ssh
+    enabled: true
+
+- name: remove cloud-init ssh config
+  file:
+    path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+    state: absent
+
+- name: disable ssh password auth
+  copy:
+    content: |
+      PasswordAuthentication no
+    dest: /etc/ssh/sshd_config.d/nopasswd.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl restart ssh

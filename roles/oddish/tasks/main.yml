@@ -2,6 +2,10 @@
   include_vars: secrets.yml
   tags: [always]
 
+- name: ssh
+  import_tasks: ssh.yml
+  tags: [ssh]
+
 - name: nosnapd
   import_tasks: nosnapd.yml
   tags: nosnapd
