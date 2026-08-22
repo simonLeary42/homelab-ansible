@@ -22,11 +22,6 @@ Configured internally:
 * btrfs snapshots
 * ssh
 
-TODO:
-* NFS mount from bunker
-* disk snapshots
-* backups to bunker
-
 ## usage
 
 ### variables
@@ -41,6 +36,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `certbot`
 * `gitea`
 * `hookshot`
+* `network`
 * `node_exporter`
 * `nosnapd`
 * `podman`
@@ -48,6 +44,12 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `ssh`
 * `synapse`
 * `wireguard`
+
+## manual wifi setup
+
+It would be easiest to use ethernet for provisioning.
+If that is not desired, you can get a fresh ubuntu install connected to wifi by editing `/etc/netplan/` and starting/restarting the `wpa_supplicant` service.
+See the `netplan` config file for an example.
 
 ## manual gitea setup
 

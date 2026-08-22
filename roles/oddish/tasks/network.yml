@@ -1,3 +1,8 @@
+- name: systemctl enable wpa_supplicant
+  systemd_service:
+    name: wpa_supplicant
+    enabled: true
+
 - name: update netplan config
   unity.template_multi_diff.template:
     src: netplan.yml.j2
@@ -6,13 +11,17 @@
     group: root
     mode: "0600"
   register: netplan_config
-  tags: [netplan]
+
+- name: systemctl restart wpa_supplicant
+  systemd_service:
+    name: wpa_supplicant
+    state: restarted
+  when: netplan_config.changed
 
 - name: netplan try && netplan apply
   shell: netplan try && netplan apply
   changed_when: true
   when: netplan_config.changed
-  tags: [netplan]
 
 # the default unit file includes two commands in series:
 # ExecStart=/lib/systemd/systemd-networkd-wait-online -i wlp2s0:degraded enp1s0f0:degraded
