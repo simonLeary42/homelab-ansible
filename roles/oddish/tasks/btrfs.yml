@@ -34,11 +34,16 @@
     group: root
     mode: "0644"
 
-- name: setup cron job for hourly snapshot
+- name: update systemd timer to be hourly instead of daily
   copy:
     content: |
-      0 * * * * root btrbk run
-    dest: /etc/cron.d/btrbk
+      [Unit]
+      Description=btrbk hourly timer
+
+      [Timer]
+      OnCalendar=*-*-* *:00:00
+    dest: /etc/systemd/system/btrbk.timer.d/override.conf
     owner: root
     group: root
     mode: "0644"
+  notify: systemctl daemon-reload
