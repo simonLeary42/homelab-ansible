@@ -25,7 +25,7 @@
   copy:
     content: |
       snapshot_dir /.snapshots
-      snapshot_preserve_min 1h
+      snapshot_preserve_min 59m
       snapshot_preserve 1h 1d 1w
       subvolume /
       subvolume /home
