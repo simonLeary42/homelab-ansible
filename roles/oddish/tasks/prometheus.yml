@@ -50,8 +50,8 @@
 
 - name: install exporter script
   copy:
-    src: node_exporter_systemd_user.py
-    dest: /usr/local/bin/node_exporter_systemd_user.py
+    src: sytemd_user_exporter.py
+    dest: /usr/local/sbin/sytemd_user_exporter.py
     owner: root
     group: root
     mode: "0755"
