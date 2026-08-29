@@ -4,7 +4,7 @@ import sys
 import traceback
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# example: [quadlet_exporter.py foo bar bing bong] -> [(foo, bar), (bing, bong)]
+# example: [systemd_user_service_exporter.py foo bar bing bong] -> [(foo, bar), (bing, bong)]
 USER_SERVICES = list(zip(sys.argv[1::2], sys.argv[2::2]))
 print(f"monitoring services: {list(USER_SERVICES)}", file=sys.stderr)
 

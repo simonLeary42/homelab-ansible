@@ -124,7 +124,7 @@
     name: tailscaled
     state: restarted
 
-- name: systemctl restart quadlet_exporter
+- name: systemctl restart systemd_user_service_exporter
   systemd_service:
-    name: quadlet_exporter
+    name: systemd_user_service_exporter
     state: restarted

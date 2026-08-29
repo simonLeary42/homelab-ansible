@@ -115,26 +115,27 @@
     group: root
     mode: "0755"
 
-- name: install quadlet_exporter.py
+- name: install systemd_user_service_exporter.py
   copy:
-    src: quadlet_exporter.py
-    dest: /usr/local/sbin/quadlet_exporter.py
+    src: systemd_user_service_exporter.py
+    dest: /usr/local/sbin/systemd_user_service_exporter.py
     owner: root
     group: root
     mode: "0700"
-  notify: systemctl restart quadlet_exporter
+  notify: systemctl restart systemd_user_service_exporter
 
-- name: install quadlet_exporter.service
+- name: install systemd_user_service_exporter.service
   copy:
     content: |
       [Unit]
       Description=homemade python http server to display results of `systemctl --user show ...` for many different services and users
-      After=multi-user.target
       [Service]
       Type=simple
-      ExecStart=/usr/local/sbin/quadlet_exporter.py {{ _args }}
+      ExecStart=/usr/local/sbin/systemd_user_service_exporter.py {{ _args }}
       Restart=always
-    dest: /etc/systemd/system/quadlet_exporter.service
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/systemd_user_service_exporter.service
     owner: root
     group: root
     mode: "0644"
@@ -146,9 +147,9 @@
       {% set _ = output.append(podman_container.name) %}
       {% endfor %}
       {{ output | join(' ') }}
-  notify: systemctl restart quadlet_exporter
+  notify: systemctl restart systemd_user_service_exporter
 
-- name: systemctl enable quadlet_exporter
+- name: systemctl enable systemd_user_service_exporter
   systemd_service:
-    name: quadlet_exporter
+    name: systemd_user_service_exporter
     enabled: true
