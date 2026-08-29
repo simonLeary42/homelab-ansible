@@ -97,3 +97,17 @@
     creates: "/var/lib/systemd/linger/{{ item.user }}"
   loop: "{{ podman_containers }}"
   loop_control: { label: "{{ item.name }}" }
+
+- name: install su-systemctl helper script
+  copy:
+    content: |
+      #!/bin/bash
+      user=$1
+      shift
+      uid="$(getent passwd "$user" | awk -F : '{print $3}')"
+      set -x
+      sudo -u "$user" XDG_RUNTIME_DIR="/run/user/$uid" systemctl --user "$@"
+    dest: /usr/local/sbin/su-systemctl
+    owner: root
+    group: root
+    mode: "0755"
