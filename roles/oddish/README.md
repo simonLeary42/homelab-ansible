@@ -167,6 +167,8 @@ The fix for this particular problem was to make sure the container ran as its fa
 
 I have alerts set up with `alertmanager` for regular systemd services.
 This does not work out of the box for rootless podman systemd services.
-`node_exporter` only represents system-scope services, `systemd_exporter` can only represent user-scope services for one user, and `prometheus-podman-exporter` doesn't make metrics that are useful to me.
-I could launch a `prometheus-podman-exporter` for every single user using different port numbers and configure prometheus to scrape them all.
-Or, I could build a simple exporter that runs as root and gathers service info using `systemctl show`.
+`node_exporter` only represents system-scope services.
+`prometheus-podman-exporter` doesn't produce metrics which are useful to me, and can only represent user-scope services for one user.
+`systemd_exporter` produced metrics which are *almost* useful to me but not quite ([github issue](https://github.com/issues/created?issue=prometheus-community%7Csystemd_exporter%7C237&issue_global_id=I_kwDOCoYJCM8AAAABOzd6NQ)), and can only represent user-scope services for one user.
+Being limited to one user is not a complete dealbreaker, I could launch a `systemd_exporter` for every single user using different port numbers and configure prometheus to scrape them all, but I hate adding unnecessary moving parts.
+Instead, I build my own exporter that runs a python `http.server` as root and gathers service info using `systemctl show`.
