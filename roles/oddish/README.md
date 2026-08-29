@@ -158,17 +158,17 @@ Modify: 2026-08-16 19:55:17.341563702 +0000
 Change: 2026-08-16 19:55:17.730563332 +0000
 ```
 
-
 I get the exact `podman` command from `systemctl status`, and I modify it to remove the `-d` argument and change the entrypoint to `stat` the config file instead.
 I can then confirm that the config file is owned as `root` inside the container.
 The fix for this particular problem was to make sure the container ran as its fake `root` user.
 
 ### monitoring podman containers
 
-I have alerts set up with `alertmanager` for regular systemd services.
-This does not work out of the box for rootless podman systemd services.
-`node_exporter` only represents system-scope services.
+I have alerts set up with `node_exporter` for regular systemd services.
+These alerts do have one big flaw: they check for `state=failed`, but when a service is configured to restart automatically, they never actually reach `state=failed` unless they restart and die 5 times in rapid succession.
+
+`node_exporter` does not work out of the box for rootless podman systemd containers since those have to be in the `--user` scope (see above).
 `prometheus-podman-exporter` doesn't produce metrics which are useful to me, and can only represent user-scope services for one user.
-`systemd_exporter` produced metrics which are *almost* useful to me but not quite ([github issue](https://github.com/issues/created?issue=prometheus-community%7Csystemd_exporter%7C237&issue_global_id=I_kwDOCoYJCM8AAAABOzd6NQ)), and can only represent user-scope services for one user.
+`systemd_exporter` has the same problem as `node_exporter` explained above, and can only represent user-scope services for one user.
 Being limited to one user is not a complete dealbreaker, I could launch a `systemd_exporter` for every single user using different port numbers and configure prometheus to scrape them all, but I hate adding unnecessary moving parts.
-Instead, I build my own exporter that runs a python `http.server` as root and gathers service info using `systemctl show`.
+Instead, I build my own exporter that runs a quick-and-dirty python `http.server` as root and gathers service info using `systemctl show`.
