@@ -27,3 +27,6 @@ podman_containers:
   - user: alertmanager
     name: alertmanager
     index: 0
+  - user: podman-exporter
+    name: prometheus-podman-exporter
+    index: 0

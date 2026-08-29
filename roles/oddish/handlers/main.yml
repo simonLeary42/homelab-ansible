@@ -30,6 +30,10 @@
   command: systemctl --user -M alertmanager@ daemon-reload
   changed_when: true
 
+- name: systemctl --user -M podman-exporter@ daemon-reload
+  command: systemctl --user -M podman-exporter@ daemon-reload
+  changed_when: true
+
 - name: systemctl restart gitea
   systemd_service:
     name: gitea
@@ -91,6 +95,12 @@
   become: true
   become_user: alertmanager
 
+- name: sudo -u podman-exporter podman system migrate
+  command: podman system migrate
+  changed_when: true
+  become: true
+  become_user: podman-exporter
+
 - name: systemctl --user -M simon@ restart hello
   command: systemctl --user -M simon@ restart hello
   changed_when: true
@@ -117,6 +127,10 @@
 
 - name: systemctl --user -M alertmanager@ restart alertmanager
   command: systemctl --user -M alertmanager@ restart alertmanager
+  changed_when: true
+
+- name: systemctl --user -M podman-exporter@ restart prometheus-podman-exporter
+  command: systemctl --user -M podman-exporter@ restart prometheus-podman-exporter
   changed_when: true
 
 - name: systemctl restart tailscaled

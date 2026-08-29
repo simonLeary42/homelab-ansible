@@ -1,0 +1,14 @@
+- name: podman-exporter group
+  group:
+    name: podman-exporter
+    system: true
+
+- name: podman-exporter user
+  user:
+    name: podman-exporter
+    home: /home/podman-exporter
+    password_lock: true
+    group: podman-exporter
+    shell: /bin/bash
+    system: true
+    state: present

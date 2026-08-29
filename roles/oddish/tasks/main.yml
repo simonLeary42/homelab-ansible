@@ -134,3 +134,7 @@
 - name: btrfs
   import_tasks: btrfs.yml
   tags: [btrfs]
+
+- name: podman-exporter
+  import_tasks: podman-exporter.yml
+  tags: [podman-exporter]
