@@ -172,3 +172,15 @@ These alerts do have one big flaw: they check for `state=failed`, but when a ser
 `systemd_exporter` has the same problem as `node_exporter` explained above, and can only represent user-scope services for one user.
 Being limited to one user is not a complete dealbreaker, I could launch a `systemd_exporter` for every single user using different port numbers and configure prometheus to scrape them all, but I hate adding unnecessary moving parts.
 Instead, I build my own exporter that runs a quick-and-dirty python `http.server` as root and gathers service info using `systemctl show`.
+
+## matrix-hookshot
+
+The alertmanager -> matrix-hookshot -> matrix integration is quite awful.
+matrix-hookshot utilizes matrix-synapse's state as a persistent store, which means that you must raw-dog the matrix-synapse REST API if the functionality you desire is not supported by chat commands.
+TODO enable widget
+matrix-hookshot allows you to "transform" webhook data into a formatted message using javascript, but the only way to enable this is by raw-dogging the matrix-synapse REST API.
+When doing so, all the JS code must fit in a single string in a JSON object.
+
+I have provided a basic helper script to assist this process `matrix-hookshot-apply-transformation-js.bash`.
+To set the transformation function for a particular webhook, you need the webhook name, the channel ID, a JS file which contains no double quotes and no newlines, and the bearer token for HTTP auth.
+You can use {{ hookshot_as_token }} as your bearer token for this.

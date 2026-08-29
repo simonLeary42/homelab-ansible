@@ -51,3 +51,39 @@
     group: hookshot
     mode: "0640"
   notify: systemctl --user -M hookshot@ restart matrix-hookshot
+
+- name: install /etc/matrix-hookshot/format-prometheus.js
+  copy:
+    src: matrix-hookshot-format-prometheus.js
+    dest: /etc/matrix-hookshot/format-prometheus.js
+    owner: hookshot
+    group: hookshot
+    mode: "0644"
+
+- name: install matrix hookshot JS transform helper script
+  copy:
+    content: |
+      #!/bin/bash
+      if [ -z "$TOKEN" ]; then
+          echo "error: must set TOKEN environment variable"
+          exit 1
+      fi
+      if [ $# != 3 ]; then
+          echo "error: must provide room ID (including '!'), hook name, and .js file path as arguments"
+          exit 1
+      fi
+      FUNCTION="$(<$3)"
+      if grep -q '"' <<<"$FUNCTION"; then
+          echo "error: .js file cannot contain double quotes"
+          exit 1
+      fi
+      if [ "$(wc -l <<<"$FUNCTION")" != 1 ]; then
+          echo "error: .js file cannot contain newlines"
+          exit 1
+      fi
+      echo "$TOKEN" | curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $(</dev/stdin)" 'http://127.0.0.1:8008/_matrix/client/v3/rooms/'"$1"'/state/uk.half-shot.matrix-hookshot.generic.hook/'"$2" -d '{"name":"alertmanager","transformationFunction":"'"$FUNCTION"'"}'
+      echo
+    dest: /usr/local/bin/matrix-hookshot-apply-transformation-js.bash
+    owner: hookshot
+    group: hookshot
+    mode: "0755"
