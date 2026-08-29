@@ -6,19 +6,12 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "systemd service crashed! (ExecMainStatus != 0)"
-          description: >
-            name={{ $labels.name }}
-            ExecMainStatus={{ $value }}
-            user={{ $labels.user }}
-            instance={{ $labels.instance }}
+          summary: "systemd service crashed! (ExecMainStatus == {{ $value }})"
+          description: "systemd service crashed! (ExecMainStatus == {{ $value }})"
       - alert: "systemd Result != 'success'"
         expr: systemd_unit_result_success != 1
         labels:
           severity: warning
         annotations:
           summary: "systemd service crashed! (Result != 'success')"
-          description: >
-            name={{ $labels.name }}
-            user={{ $labels.user }}
-            instance={{ $labels.instance }}
+          description: "systemd service crashed! (Result != 'success')"
