@@ -123,3 +123,8 @@
   systemd_service:
     name: tailscaled
     state: restarted
+
+- name: systemctl restart systemd_user_service_exporter
+  systemd_service:
+    name: systemd_user_service_exporter
+    state: restarted

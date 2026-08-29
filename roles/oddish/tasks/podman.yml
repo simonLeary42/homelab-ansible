@@ -114,3 +114,42 @@
     owner: root
     group: root
     mode: "0755"
+
+- name: install systemd_user_service_exporter.py
+  copy:
+    src: systemd_user_service_exporter.py
+    dest: /usr/local/sbin/systemd_user_service_exporter.py
+    owner: root
+    group: root
+    mode: "0700"
+  notify: systemctl restart systemd_user_service_exporter
+
+- name: install systemd_user_service_exporter.service
+  copy:
+    content: |
+      [Unit]
+      Description=homemade python http server to display results of `systemctl --user show ...` for many different services and users
+      [Service]
+      Type=simple
+      ExecStart=/usr/local/sbin/systemd_user_service_exporter.py {{ _args }}
+      Restart=always
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/systemd_user_service_exporter.service
+    owner: root
+    group: root
+    mode: "0644"
+  vars:
+    _args: |-
+      {% set output = [] %}
+      {% for podman_container in podman_containers %}
+      {% set _ = output.append(podman_container.user) %}
+      {% set _ = output.append(podman_container.name) %}
+      {% endfor %}
+      {{ output | join(' ') }}
+  notify: systemctl restart systemd_user_service_exporter
+
+- name: systemctl enable systemd_user_service_exporter
+  systemd_service:
+    name: systemd_user_service_exporter
+    enabled: true
