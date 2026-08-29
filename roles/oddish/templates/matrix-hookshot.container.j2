@@ -16,6 +16,7 @@ Volume=/etc/matrix-hookshot:/data
 
 [Service]
 Restart=on-failure
+RestartSec={{ restart_sec }}
 
 [Install]
 WantedBy=default.target

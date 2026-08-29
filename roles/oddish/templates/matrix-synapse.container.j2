@@ -23,6 +23,7 @@ Environment=SYNAPSE_CONFIG_DIR=/etc/matrix-synapse
 
 [Service]
 Restart=on-failure
+RestartSec={{ restart_sec }}
 
 [Install]
 WantedBy=default.target

@@ -125,7 +125,7 @@ You can view a container's output with `journalctl -e | grep CONTAINER_NAME` or 
 https://docs.podman.io/en/latest/markdown/podman-run.1.html#uidmap-flags-container-uid-from-uid-amount
 
 Each podman container is assigned a subordinate UIDnumber and GIDnumber namespace of size 65536.
-Each podman container should make use of the `{{ uidmap }}` and `{{ gidmap }}` variables.
+Each podman container should make use of the `{{ uidmap }}`, `{{ gidmap }}`, and `{{ restart_sec }}` variables.
 See `matrix-hookshot.container.j2` for an example.
 
 podman automatically builds its uid_map based on `/etc/subuid` before the `--uidmap` argument takes effect.

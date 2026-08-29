@@ -19,3 +19,7 @@ Group=0
 
 [Install]
 WantedBy=default.target
+
+[Service]
+Restart=on-failure
+RestartSec={{ restart_sec }}

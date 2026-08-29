@@ -65,6 +65,8 @@
   loop: "{{ podman_containers }}"
   loop_control: { label: "{{ item.name }}" }
   vars:
+    # prometheus polls every 15 seconds, if restart too quickly, failure will go un-noticed
+    restart_sec: 30
     uid_number: "{{ getent_passwd[item.user][1] }}"
     uidmap:
       # bidirectional real user <-> container root user
