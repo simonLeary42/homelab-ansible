@@ -43,6 +43,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `prometheus`
 * `ssh`
 * `synapse`
+* `tailscale`
 * `wireguard`
 
 ## manual wifi setup
@@ -161,3 +162,11 @@ Change: 2026-08-16 19:55:17.730563332 +0000
 I get the exact `podman` command from `systemctl status`, and I modify it to remove the `-d` argument and change the entrypoint to `stat` the config file instead.
 I can then confirm that the config file is owned as `root` inside the container.
 The fix for this particular problem was to make sure the container ran as its fake `root` user.
+
+### monitoring podman containers
+
+I have alerts set up with `alertmanager` for regular systemd services.
+This does not work out of the box for rootless podman systemd services.
+`node_exporter` only represents system-scope services, and `prometheus-podman-exporter` only represents the user-scope services for the currently running user.
+I could launch a `prometheus-podman-exporter` for every single user using different port numbers and configure prometheus to scrape them all.
+Or, I could build a simple exporter that runs as root and gathers service info using `systemctl show`.
