@@ -4,14 +4,10 @@ import time
 import getpass
 import subprocess
 
-USER2SERVICES = {
-    "simon": ["hello", "hello2"],
-    "prometheus": ["prometheus"],
-    "grafana": ["grafana"],
-    "alertmanager": ["alertmanager"],
-    "hookshot": ["matrix-hookshot"],
-    "synapse": ["matrix-synapse"],
-}
+USER2SERVICES = {}
+{% for item in podman_containers %}
+USER2SERVICES.setdefault("{{ item.user }}", []).append("{{ item.name }}")
+{% endfor %}
 
 for user, services in USER2SERVICES.items():
     for service in services:

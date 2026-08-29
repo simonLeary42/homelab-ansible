@@ -114,3 +114,11 @@
     owner: root
     group: root
     mode: "0755"
+
+- name: install quadlet_exporter.py
+  template:
+    src: quadlet_exporter.py.j2
+    dest: /usr/local/sbin/quadlet_exporter.py
+    owner: root
+    group: root
+    mode: "0755"

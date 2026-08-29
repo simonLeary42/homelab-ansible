@@ -47,11 +47,3 @@
     group: prometheus
     mode: "0750"
   notify: systemctl --user -M prometheus@ restart prometheus
-
-- name: install exporter script
-  copy:
-    src: sytemd_user_exporter.py
-    dest: /usr/local/sbin/sytemd_user_exporter.py
-    owner: root
-    group: root
-    mode: "0755"
