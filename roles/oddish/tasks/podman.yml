@@ -140,7 +140,7 @@
     group: root
     mode: "0644"
   vars:
-    _args: |
+    _args: |-
       {% set output = [] %}
       {% for podman_container in podman_containers %}
       {% set _ = output.append(podman_container.user) %}
