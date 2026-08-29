@@ -3,7 +3,7 @@
     name: prometheus
     system: true
 
-- name: prometheus user (parity with `simon-prometheus` user on BNKR-NAS)
+- name: prometheus user
   user:
     name: prometheus
     home: /home/prometheus
@@ -38,6 +38,16 @@
     owner: prometheus
     group: prometheus
     mode: "0644"
+  notify: systemctl --user -M prometheus@ restart prometheus
+
+- name: install /etc/prometheus/custom_alerts.yml
+  copy:
+    src: custom_alerts.yml
+    dest: /etc/prometheus/custom_alerts.yml
+    owner: prometheus
+    group: prometheus
+    mode: "0644"
+  notify: systemctl --user -M prometheus@ restart prometheus
 
 - name: setup /var/lib/prometheus/
   unity.file_multi_diff.file:

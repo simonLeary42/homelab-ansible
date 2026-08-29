@@ -23,17 +23,14 @@ class Serv(BaseHTTPRequestHandler):
                         for line in stdout.decode("utf8").splitlines()
                     ]
                 )
-                current_state = properties["ActiveState"].lower()
-                STATES = ["activating", "active", "deactivating", "failed", "inactive"]
-                assert current_state in STATES, (
-                    f"unknown state '{current_state}', expected one of {STATES}"
+                output_lines.append(
+                    'systemd_unit_result_success{user="%s",name="%s.service"} %d'
+                    % (user, service, 1 if properties["Result"] == "success" else 0)
                 )
-                for state in STATES:
-                    val = 1 if current_state == state else 0
-                    output_lines.append(
-                        'node_systemd_unit_state{user="%s",name="%s.service",state="%s"} %d'
-                        % (user, service, state, val)
-                    )
+                output_lines.append(
+                    'systemd_unit_exec_main_status{user="%s",name="%s.service"} %d'
+                    % (user, service, int(properties["ExecMainStatus"]))
+                )
             self.send_response(200)
             self.send_header("Content-Type", "text/plain")
             self.end_headers()

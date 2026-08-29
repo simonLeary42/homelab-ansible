@@ -1,0 +1,24 @@
+groups:
+  - name: custom_alerts
+    rules:
+      - alert: "systemd ExecMainStatus != 0"
+        expr: systemd_unit_exec_main_status != 0
+        labels:
+          severity: warning
+        annotations:
+          summary: "systemd service crashed! (ExecMainStatus:FZF != 0)"
+          description: >
+            name={{ $labels.name }}
+            ExecMainStatus={{ $value }}
+            user={{ $labels.user }}
+            instance={{ $labels.instance }}
+      - alert: "systemd Result != 'success'"
+        expr: systemd_unit_result_success != 1
+        labels:
+          severity: warning
+        annotations:
+          summary: "systemd service crashed! (Result != 'success')"
+          description: >
+            name={{ $labels.name }}
+            user={{ $labels.user }}
+            instance={{ $labels.instance }}
