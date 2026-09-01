@@ -134,3 +134,7 @@
 - name: btrfs
   import_tasks: btrfs.yml
   tags: [btrfs]
+
+- name: minecraft
+  import_tasks: minecraft.yml
+  tags: [minecraft]

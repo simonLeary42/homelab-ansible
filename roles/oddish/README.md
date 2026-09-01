@@ -5,6 +5,7 @@ Monolithic home server, named after the pokemon.
 Services exposed:
 * gitea (port 3003)
 * matrix-synapse (port 8448)
+* minecraft (port 25565)
 
 Configured internally:
 * apt sources
@@ -36,6 +37,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `certbot`
 * `gitea`
 * `hookshot`
+* `minecraft`
 * `network`
 * `node_exporter`
 * `nosnapd`

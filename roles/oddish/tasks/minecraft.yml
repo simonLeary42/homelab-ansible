@@ -1,0 +1,28 @@
+- name: minecraft group
+  group:
+    name: minecraft
+    system: true
+
+- name: minecraft user
+  user:
+    name: minecraft
+    home: /home/minecraft
+    password_lock: true
+    group: minecraft
+    comment: minecraft
+    shell: /bin/bash
+    system: true
+    state: present
+
+- name: setup /opt/minecraft
+  file:
+    path: /opt/minecraft
+    state: directory
+    owner: minecraft
+    group: minecraft
+    mode: "0755"
+
+- name: apt install JRE
+  apt:
+    name: default-jre-headless
+    state: present
