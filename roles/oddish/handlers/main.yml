@@ -128,3 +128,8 @@
   systemd_service:
     name: systemd_user_service_exporter
     state: restarted
+
+- name: systemctl restart minecraft-matt
+  systemd_service:
+    name: minecraft-matt
+    state: restarted

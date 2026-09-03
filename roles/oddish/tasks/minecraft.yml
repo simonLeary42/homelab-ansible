@@ -14,15 +14,109 @@
     system: true
     state: present
 
-- name: setup /opt/minecraft
-  file:
-    path: /opt/minecraft
-    state: directory
-    owner: minecraft
-    group: minecraft
-    mode: "0755"
-
 - name: apt install JRE
   apt:
     name: default-jre-headless
     state: present
+  notify: systemctl restart minecraft-matt
+
+- name: setup directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: minecraft
+    group: minecraft
+    mode: "0755"
+  loop:
+    - /opt/minecraft
+    - /opt/minecraft/aio-mc-rcon
+    - /opt/minecraft/matt
+
+# TODO install server_26.2.jar
+
+- name: symlink server.jar
+  file:
+    path: /opt/minecraft/matt/server.jar
+    src: /opt/minecraft/matt/server_26.2.jar
+    state: link
+  notify: systemctl restart minecraft-matt
+
+- name: install server.properties
+  template:
+    src: server.properties.j2
+    dest: /opt/minecraft/matt/server.properties
+    owner: minecraft
+    group: minecraft
+    mode: "0600"
+  notify: systemctl restart minecraft-matt
+
+- name: install rcon_password file
+  copy:
+    dest: /opt/minecraft/matt/rcon_password
+    content: |
+      {{ minecraft_matt_rcon_password }}
+    owner: minecraft
+    group: minecraft
+    mode: "0600"
+
+- name: install aio-mc-rcon
+  pip:
+    name: aio-mc-rcon
+    state: present
+    virtualenv: /opt/minecraft/aio-mc-rcon/venv
+  become: true
+  become_user: minecraft
+
+- name: install mc-rcon wrapper script
+  copy:
+    dest: /usr/local/bin/mc-rcon
+    content: |
+      #!/opt/minecraft/aio-mc-rcon/venv/bin/python
+      import sys, asyncio
+      from aiomcrcon import Client
+      async def main():
+          assert not sys.stdin.isatty()
+          password = sys.stdin.read().strip()
+          assert len(sys.argv) == 2
+          command = sys.argv[1]
+          async with Client("127.0.0.1", 25575, password) as client:
+              response = await client.send_cmd(command)
+              print(response)
+      if __name__ == "__main__":
+          asyncio.run(main())
+    owner: minecraft
+    group: minecraft
+    mode: "0750"
+
+- name: install minecraft-matt.service
+  copy:
+    content: |
+      [Unit]
+      Description=minecraft server - matt
+      [Service]
+      User=minecraft
+      Group=minecraft
+      WorkingDirectory=/opt/minecraft/matt
+      ExecStart=java -jar ./server.jar
+      Restart=on-failure
+      KillMode=none
+      ExecStop=/bin/sh -c '/usr/local/bin/mc-rcon stop </opt/minecraft/matt/rcon_password'
+      SuccessExitStatus=0 1
+      ProtectHome=true
+      ProtectSystem=full
+      PrivateDevices=true
+      NoNewPrivileges=true
+      [Install]
+      WantedBy=default.target
+    dest: /etc/systemd/system/minecraft-matt.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - systemctl daemon-reload
+    - systemctl restart minecraft-matt
+
+- name: systemctl enable minecraft-matt.service
+  systemd_service:
+    name: minecraft-matt
+    enabled: true

@@ -30,6 +30,7 @@
       - wpasupplicant # required for wifi
       - net-tools
       - python-is-python3
+      - python3-venv
       - jc
       - bat
       # - firefox # gecko selenium webdriver for apartment bot
