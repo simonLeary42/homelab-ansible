@@ -15,3 +15,10 @@ groups:
         annotations:
           summary: "systemd service crashed! (Result != 'success')"
           description: "systemd service crashed! (Result != 'success')"
+      - alert: "btrfs disk filling up"
+        expr: "(100 * ((node_btrfs_device_size_bytes - node_btrfs_device_unused_bytes) / node_btrfs_device_size_bytes)) > 75"
+        labels:
+          severity: critical
+        annotations:
+          summary: "BTRFS filesystem on {{ $labels.device }} is filling up ({{ $value }}%)!"
+          description: "BTRFS filesystem on {{ $labels.device }} is filling up ({{ $value }}%)!"
