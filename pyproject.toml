@@ -9,5 +9,6 @@ dependencies = [
     "ansible-core<2.20", # should match .pre-commit-config.yaml
     "ansible-lint>=26.6.0",
     "clustershell>=1.10.1",
+    "jc>=1.25.7",
     "pre-commit>=4.6.1",
 ]

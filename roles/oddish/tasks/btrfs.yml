@@ -1,25 +1,57 @@
-# NOTE: manual btrfs setup is required at OS installation time, see README.md
+- name: setup /mnt/btr_pool
+  file:
+    path: /mnt/btr_pool
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
 
-- name: setup subvolumes
+- name: setup /mnt/btr_pool btrfs mount
+  ansible.posix.mount:
+    src: /dev/nvme0n1p2
+    path: /mnt/btr_pool
+    fstype: btrfs
+    state: mounted
+    opts: defaults,subvolid=5
+
+- name: check mounts
+  command: mount
+  changed_when: false
+  register: mount
+
+# if the @home subvolume did not exist yet, creating it and migrating all the files from /home
+# is not something that I want to implement via ansible
+# this should be done manually at OS installation time
+# see README.md
+- name: assert that expected btrfs subvolumes have been mounted
+  fail:
+    msg: "one or more expected btrfs subvolumes are not mounted: {{ mounts_missing | to_json }}"
   vars:
     subvolumes:
+      - name: "@"
+        path: /
+      - name: "@home"
+        path: /home
+      - name: "@swap"
+        path: /swap
       - name: "@snapshots"
-        path: "/.snapshots"
-  block:
-    - name: create subvolumes
-      community.general.btrfs_subvolume:
-        name: "{{ item.name }}"
-        filesystem_device: /dev/nvme0n1p2
-        automount: true
-      loop: "{{ subvolumes }}"
-    - name: mount subvolumes
-      ansible.posix.mount:
-        src: /dev/nvme0n1p2
-        path: "{{ item.path }}"
-        fstype: btrfs
-        state: mounted
-        opts: "defaults,subvol={{ item.name }}"
-      loop: "{{ subvolumes }}"
+        path: /.snapshots
+    btrfs_mounts: "{{ mount.stdout | community.general.jc('mount') | selectattr('type', 'equalto', 'btrfs') }}"
+    mounts_missing: |-
+      {%- set output = [] -%}
+      {%- set mount_point_matches = [] -%}
+      {%- for item in subvolumes -%}
+        {%- set _ = mount_point_matches.append(btrfs_mounts | selectattr('mount_point', 'equalto', item.path)) -%}
+        {%- if mount_point_matches | last | length == 0 -%}
+            {%- set _ = output.append(item) -%}
+        {%- else -%}
+            {%- if (mount_point_matches | last)[0].options | select('equalto', 'subvol=/' + item.name) | length == 0 -%}
+                {%- set _ = output.append(item) -%}
+            {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ output }}
+  when: mounts_missing | length > 0
 
 - name: install /etc/btrbk.conf
   copy:
