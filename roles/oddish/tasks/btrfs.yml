@@ -25,6 +25,7 @@
 - name: check mounts
   command: mount
   changed_when: false
+  check_mode: false
   register: mount
 
 # if the @home subvolume did not exist yet, creating it and migrating all the files from /home
@@ -40,11 +41,11 @@
       "@home": /home
       "@swap": /swap
       "@snapshots": /.snapshots
-    btrfs_mounts: "{{ mount.stdout | community.general.jc('mount') | selectattr('type', 'equalto', 'btrfs') }}"
+    nvme_btrfs_mounts: "{{ mount.stdout | community.general.jc('mount') | selectattr('type', 'equalto', 'btrfs') | selectattr('filesystem', 'equalto', '/dev/nvme0n1p2') }}"
     mounts_missing: |-
       {%- set output = [] -%}
       {%- for subvol, mount_point in subvolumes.items() -%}
-      {%- if btrfs_mounts | selectattr('mount_point', 'equalto', mount_point) | selectattr('options', 'contains', 'subvol=/' + subvol) | length == 0 -%}
+      {%- if nvme_btrfs_mounts | selectattr('mount_point', 'equalto', mount_point) | selectattr('options', 'contains', 'subvol=/' + subvol) | length == 0 -%}
       {%- set _ = output.append([subvol, mount_point]) -%}
       {%- endif -%}
       {%- endfor -%}
