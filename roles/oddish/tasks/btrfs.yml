@@ -1,42 +1,31 @@
-- name: setup /mnt/btr_pool
-  file:
-    path: /mnt/btr_pool
-    state: directory
-    owner: root
-    group: root
-    mode: "0755"
-
-- name: setup /mnt/btr_pool btrfs mount
-  ansible.posix.mount:
-    src: /dev/nvme0n1p2
-    path: /mnt/btr_pool
-    fstype: btrfs
-    state: mounted
-    opts: defaults,subvolid=5
+- name: setup subvolid=5 btrfs mounts for each drive
+  vars:
+    devices:
+      - nvme0n1p2
+      - sda1
+      - TODO
+  block:
+    - name: setup directory
+      file:
+        path: "/mnt/{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop: "{{ devices }}"
+    - name: setup mount
+      ansible.posix.mount:
+        src: "/dev/{{ item }}"
+        path: "/mnt/{{ item }}"
+        fstype: btrfs
+        state: mounted
+        opts: defaults,subvolid=5
+      loop: "{{ devices }}"
 
 - name: check mounts
   command: mount
   changed_when: false
   register: mount
-
-- name: assert that expected drives have their subvolid=5 btrfs subvolume mounted
-  fail:
-    msg: "one or more expected btrfs subvolumes are not mounted: {{ mounts_missing | to_json }}"
-  vars:
-    devices:
-      /dev/nvme0n1p2: /mnt/btr_pool
-      /dev/sda1: /mnt/sda1
-      /dev/TODO: /mnt/TODO
-    btrfs_mounts: "{{ mount.stdout | community.general.jc('mount') | selectattr('type', 'equalto', 'btrfs') }}"
-    mounts_missing: |-
-      {%- set output = [] -%}
-      {%- for device, mount_point in devices.items() -%}
-        {%- if (btrfs_mounts | selectattr('mount_point', 'equalto', mount_point) | selectattr('filesystem', 'equalto', device) | selectattr('options', 'contains', 'subvolid=5') | length) == 0 %}
-            {%- set _ = output.append([device, mount_point]) -%}
-        {%- endif -%}
-      {%- endfor -%}
-      {{ output }}
-  when: mounts_missing | length > 0
 
 # if the @home subvolume did not exist yet, creating it and migrating all the files from /home
 # is not something that I want to implement via ansible
@@ -55,9 +44,9 @@
     mounts_missing: |-
       {%- set output = [] -%}
       {%- for subvol, mount_point in subvolumes.items() -%}
-        {%- if btrfs_mounts | selectattr('mount_point', 'equalto', mount_point) | selectattr('options', 'contains', 'subvol=/' + subvol) | length == 0 %}
-            {%- set _ = output.append([subvol, mount_point]) -%}
-        {%- endif -%}
+      {%- if btrfs_mounts | selectattr('mount_point', 'equalto', mount_point) | selectattr('options', 'contains', 'subvol=/' + subvol) | length == 0 -%}
+      {%- set _ = output.append([subvol, mount_point]) -%}
+      {%- endif -%}
       {%- endfor -%}
       {{ output }}
   when: mounts_missing | length > 0
