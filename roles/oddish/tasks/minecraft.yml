@@ -100,18 +100,23 @@
       # The specified command should hence be a synchronous operation, not an asynchronous one.
       # Also note that the stop operation is always performed if the service started successfully, even if the processes in the service terminated on their own or were killed.
       # The stop commands must be prepared to deal with that case.
+      # $MAINPID will be unset if systemd knows that the main process exited by the time the stop commands are called.
       # https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
-      if ! nc -zv 127.0.0.1 25575 &>/dev/null; then
+      if ! [ -d "/proc/$MAINPID" ]; then
           echo "server is not running?"
           exit 0
       fi
-      /usr/local/bin/mc-rcon stop </opt/minecraft/matt/rcon_password
+      /usr/local/bin/mc-rcon stop
       elapsed=0
-      while [ "$elapsed" -lt 30 ] && nc -zv 127.0.0.1 25575 &>/dev/null; do
+      while [ "$elapsed" -lt 30 ] && [ -d "/proc/$MAINPID" ]; do
           echo "waiting for server to stop ($elapsed)..."
           elapsed=$((elapsed + 1))
           sleep 1
       done
+      if [ "$elapsed" -ge 30 ]; then
+          echo "timed out waiting for server to stop, systemd may kill the process now"
+          exit 1
+      fi
     owner: minecraft
     group: minecraft
     mode: "0750"
