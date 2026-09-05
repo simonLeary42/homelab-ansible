@@ -118,23 +118,7 @@
 
 - name: install minecraft-matt.service
   copy:
-    content: |
-      [Unit]
-      Description=minecraft server - matt
-      [Service]
-      User=minecraft
-      Group=minecraft
-      WorkingDirectory=/opt/minecraft/matt
-      ExecStart=java -jar ./server.jar
-      Restart=on-failure
-      ExecStop=/usr/local/bin/mc-stop
-      SuccessExitStatus=0 1
-      ProtectHome=true
-      ProtectSystem=full
-      PrivateDevices=true
-      NoNewPrivileges=true
-      [Install]
-      WantedBy=default.target
+    src: minecraft-matt.service
     dest: /etc/systemd/system/minecraft-matt.service
     owner: root
     group: root

@@ -1,0 +1,19 @@
+[Unit]
+Description=minecraft server - matt
+
+[Service]
+User=minecraft
+Group=minecraft
+WorkingDirectory=/opt/minecraft/matt
+ExecStart=java -jar ./server.jar
+Restart=on-failure
+ExecStop=/usr/local/bin/mc-stop
+SuccessExitStatus=0 1
+ProtectHome=true
+ProtectSystem=full
+PrivateDevices=true
+NoNewPrivileges=true
+SyslogIdentifier=minecraft-matt
+
+[Install]
+WantedBy=default.target
