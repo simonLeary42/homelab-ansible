@@ -52,6 +52,21 @@
       {{ output }}
   when: mounts_missing | length > 0
 
+- name: assert that expected directories have CoW disabled
+  shell: set -o pipefail; lsattr "{{ item | dirname }}" | awk '$2 == "{{ item }}" {print $1}' | grep -q C
+  changed_when: false
+  check_mode: false
+  loop:
+    - /var/log
+    - /var/cache
+    - /var/spool
+    - /var/lib/containers
+    - /var/lib/prometheus
+    - /var/lib/grafana
+    - /var/lib/matrix-synapse
+    - /var/lib/gitea
+    - /opt/minecraft/matt/world
+
 - name: install /etc/btrbk.conf
   copy:
     content: |
