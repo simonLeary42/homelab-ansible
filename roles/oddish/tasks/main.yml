@@ -140,3 +140,14 @@
 - name: minecraft
   import_tasks: minecraft.yml
   tags: [minecraft]
+
+- name: install custom rsyslog rules
+  copy:
+    content: |
+      if $programname == 'minecraft-matt' then /var/log/minecraft-matt
+      & stop
+    dest: /etc/rsyslog.d/custom.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl restart rsyslog

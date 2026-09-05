@@ -133,3 +133,8 @@
   systemd_service:
     name: minecraft-matt
     state: restarted
+
+- name: systemctl restart rsyslog
+  systemd_service:
+    name: rsyslog
+    state: restarted
