@@ -43,6 +43,7 @@
       - ncdu
       - tree
       - btrbk
+      - netcat-openbsd
 
 - name: remove junk from MOTD
   file:
