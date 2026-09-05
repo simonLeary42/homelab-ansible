@@ -15,7 +15,7 @@ class Serv(BaseHTTPRequestHandler):
             output_lines = []
             for user, service in USER_SERVICES:
                 subprocess_args = ["systemctl", "--user", f"-M{user}@", "show", service]
-                print("+ " + " ".join(subprocess_args), file=sys.stderr)
+                # print("+ " + " ".join(subprocess_args), file=sys.stderr)
                 stdout = subprocess.check_output(subprocess_args)
                 properties = dict(
                     [
