@@ -31,14 +31,35 @@
     - /opt/minecraft
     - /opt/minecraft/aio-mc-rcon
     - /opt/minecraft/matt
+    - /opt/minecraft/matt/mods
 
-# TODO install server_26.2.jar
+- name: install server.jar
+  get_url:
+    url: "https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/1.1.2/server/jar"
+    dest: /opt/minecraft/matt/fabric_server_26.2_0.19.5_1.1.2.jar
+    owner: minecraft
+    group: minecraft
+    mode: "0644"
 
 - name: symlink server.jar
   file:
     path: /opt/minecraft/matt/server.jar
-    src: /opt/minecraft/matt/server_26.2.jar
+    src: /opt/minecraft/matt/fabric_server_26.2_0.19.5_1.1.2.jar
     state: link
+  notify: systemctl restart minecraft-matt
+
+- name: install mods
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: minecraft
+    group: minecraft
+    mode: "0644"
+  loop:
+    - url: "https://cdn.modrinth.com/data/P7dR8mSH/versions/UWwhUX3k/fabric-api-0.160.0%2B26.2.jar"
+      dest: /opt/minecraft/matt/mods/fabric-api-0.160.0+26.2.jar
+    - url: "https://cdn.modrinth.com/data/rd9rKuJT/versions/8bBHJTea/disconnect-packet-fix-fabric-2.2.0.jar"
+      dest: /opt/minecraft/matt/mods/disconnect-packet-fix-fabric-2.2.0.jar
   notify: systemctl restart minecraft-matt
 
 - name: install server.properties
