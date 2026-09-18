@@ -3,7 +3,7 @@
     devices:
       - nvme0n1p2
       - sda1
-      - TODO
+      - sdb2
   block:
     - name: setup directory
       file:
@@ -72,9 +72,13 @@
     content: |
       snapshot_dir /.snapshots
       snapshot_preserve_min latest
-      snapshot_preserve 1h 1d 1w
+      snapshot_preserve 1h 1d
+      target_preserve 1d 1w 1m 1y
+      target_preserve_min latest
       subvolume /
+      target /mnt/sdb2/btrbk/root
       subvolume /home
+      target /mnt/sdb2/btrbk/home
     dest: /etc/btrbk.conf
     owner: root
     group: root
