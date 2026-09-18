@@ -7,7 +7,7 @@ exclude: |
 repos:
   # auto formatters (no work required) #############################################################
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: .*\.patch$
@@ -18,7 +18,7 @@ repos:
   #   hooks:
   #     - id: shfmt
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.4.2
+    rev: v3.9.8
     hooks:
       - id: prettier
         types: [yaml]
@@ -36,7 +36,7 @@ repos:
 
   # linters (work required) ########################################################################
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
         exclude: |
@@ -52,11 +52,11 @@ repos:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
   - repo: https://github.com/shellcheck-py/shellcheck-py.git
-    rev: v0.10.0.1
+    rev: v0.11.0.1-1
     hooks:
       - id: shellcheck
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.23.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
