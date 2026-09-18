@@ -17,12 +17,8 @@ class Serv(BaseHTTPRequestHandler):
                 subprocess_args = ["systemctl", "--user", f"-M{user}@", "show", service]
                 # print("+ " + " ".join(subprocess_args), file=sys.stderr)
                 stdout = subprocess.check_output(subprocess_args)
-                properties = dict(
-                    [
-                        tuple(line.split("=", 1))
-                        for line in stdout.decode("utf8").splitlines()
-                    ]
-                )
+                lines = stdout.decode("utf8").splitlines()
+                properties = {k: v for k, v in [line.split("=", 1) for line in lines]}
                 output_lines.append(
                     'systemd_unit_result_success{user="%s",name="%s.service"} %d'
                     % (user, service, 1 if properties["Result"] == "success" else 0)
@@ -35,11 +31,13 @@ class Serv(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/plain")
             self.end_headers()
             self.wfile.write(("\n".join(output_lines) + "\n").encode())
-        except AssertionError:
+        except KeyboardInterrupt:
+            raise
+        except:
             self.send_response(500)
             self.send_header("Content-Type", "text/plain")
             self.end_headers()
-            self.wfile.write(b"something went wrong\n")
+            self.wfile.write("something went wrong\n".encode())
             traceback.print_exc()
 
 
