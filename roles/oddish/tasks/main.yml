@@ -36,6 +36,7 @@
       # - firefox # gecko selenium webdriver for apartment bot
       - iotop
       - iftop
+      - btop
       - wavemon # top-like tool for wifi
       - nfs-common
       - podman
@@ -44,6 +45,8 @@
       - tree
       - btrbk
       - netcat-openbsd
+      - direnv
+      - emacs-nox
 
 - name: remove junk from MOTD
   file:
