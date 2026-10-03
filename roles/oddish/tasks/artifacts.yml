@@ -1,0 +1,11 @@
+- name: install artifacts .envrc
+  copy:
+    content: |
+      export API_TOKEN='{{ artifacts_api_token }}'
+      export ACCOUNT='{{ artifacts_account }}'
+      export MATRIX_WEBHOOK_URL='{{ artifacts_matrix_webhook_url }}'
+      # export DISCORD_WEBHOOK_URL='{{ artifacts_discord_webhook_url }}'
+    dest: /home/simon/artifacts/.envrc
+    owner: simon
+    group: simon
+    mode: "0600"

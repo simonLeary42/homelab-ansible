@@ -154,3 +154,7 @@
     group: root
     mode: "0644"
   notify: systemctl restart rsyslog
+
+- name: artifacts
+  import_tasks: artifacts.yml
+  tags: [artifacts]

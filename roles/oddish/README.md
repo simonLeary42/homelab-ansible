@@ -33,6 +33,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 
 * `alertmanager`
 * `apache`
+* `artifacts`
 * `btrfs`
 * `certbot`
 * `gitea`
