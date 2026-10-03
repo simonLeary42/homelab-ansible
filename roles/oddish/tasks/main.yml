@@ -47,6 +47,9 @@
       - netcat-openbsd
       - direnv
       - emacs-nox
+      - bfs
+      - fzf
+      - git-delta
 
 - name: remove junk from MOTD
   file:
