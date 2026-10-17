@@ -12,7 +12,7 @@ Configured internally:
 * snapd is removed
 * certbot
 * dynamic DNS
-* wireguard
+<!-- * wireguard -->
 * matrix-hookshot
 * apache2 (proxy for matrix-synapse)
 * podman, UID namespaces
@@ -47,7 +47,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `ssh`
 * `synapse`
 * `tailscale`
-* `wireguard`
+<!-- * `wireguard` -->
 
 ## manual wifi setup
 

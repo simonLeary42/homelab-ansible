@@ -1,20 +1,20 @@
-- name: install /etc/wireguard/wg0.conf
-  unity.copy_multi_diff.copy:
-    src: wg0.conf
-    dest: /etc/wireguard/wg0.conf
-    owner: root
-    group: root
-    mode: "0600"
+# - name: install /etc/wireguard/wg0.conf
+#   unity.copy_multi_diff.copy:
+#     src: wg0.conf
+#     dest: /etc/wireguard/wg0.conf
+#     owner: root
+#     group: root
+#     mode: "0600"
 
-- name: gather network facts
-  ansible.builtin.setup: { gather_subset: [network] }
-
-- name: wg-quick up /etc/wireguard/wg0.conf
-  command: wg-quick up /etc/wireguard/wg0.conf
-  changed_when: true
-  when: ansible_wg0 is not defined
-
-- name: systemctl enable wg-quick@wg0
-  systemd_service:
-    name: wg-quick@wg0
-    enabled: true
+# - name: gather network facts
+#   ansible.builtin.setup: { gather_subset: [network] }
+#
+# - name: wg-quick up /etc/wireguard/wg0.conf
+#   command: wg-quick up /etc/wireguard/wg0.conf
+#   changed_when: true
+#   when: ansible_wg0 is not defined
+#
+# - name: systemctl enable wg-quick@wg0
+#   systemd_service:
+#     name: wg-quick@wg0
+#     enabled: true

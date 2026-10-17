@@ -95,13 +95,13 @@
   import_tasks: gitea.yml
   tags: [gitea]
 
-- name: wireguard
-  import_tasks: wireguard.yml
-  tags: [wireguard]
+# - name: wireguard
+#   import_tasks: wireguard.yml
+#   tags: [wireguard]
 
-- name: bnkr_nfs
-  import_tasks: bnkr_nfs.yml
-  tags: [bnkr_nfs]
+# - name: bnkr_nfs
+#   import_tasks: bnkr_nfs.yml
+#   tags: [bnkr_nfs]
 
 - name: synapse
   import_tasks: synapse.yml
