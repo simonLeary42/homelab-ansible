@@ -100,17 +100,17 @@
 #   import_tasks: bnkr_nfs.yml
 #   tags: [bnkr_nfs]
 
-- name: synapse
-  import_tasks: synapse.yml
-  tags: [synapse]
+# - name: synapse
+#   import_tasks: synapse.yml
+#   tags: [synapse]
 
 - name: apache
   import_tasks: apache.yml
   tags: [apache]
 
-- name: hookshot
-  import_tasks: hookshot.yml
-  tags: [hookshot]
+# - name: hookshot
+#   import_tasks: hookshot.yml
+#   tags: [hookshot]
 
 - name: prometheus
   import_tasks: prometheus.yml

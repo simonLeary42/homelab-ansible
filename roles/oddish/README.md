@@ -3,7 +3,8 @@
 Monolithic home server, named after the pokemon.
 
 Services exposed:
-* matrix-synapse (port 8448)
+* gitea (port 3003)
+<!-- * matrix-synapse (port 8448) -->
 * minecraft (port 25565)
 
 Configured internally:
@@ -12,7 +13,7 @@ Configured internally:
 * certbot
 * dynamic DNS
 <!-- * wireguard -->
-* matrix-hookshot
+<!-- * matrix-hookshot -->
 * apache2 (proxy for matrix-synapse)
 * podman, UID namespaces
 * prometheus
