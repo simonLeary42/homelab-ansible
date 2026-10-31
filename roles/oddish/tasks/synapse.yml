@@ -10,6 +10,7 @@
 #     name: synapse
 #     group: synapse
 #     shell: /usr/sbin/nologin
+#     password_lock: true
 #     system: true
 #     create_home: true
 #     state: present
