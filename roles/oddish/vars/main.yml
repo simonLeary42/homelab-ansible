@@ -8,15 +8,11 @@ podman_containers:
   - user: simon
     name: hello
     index: 0
-  - user: hookshot
-    name: matrix-hookshot
-    index: 0
+  - null # { user: hookshot, name: matrix-hookshot, index: 0 }
   - user: simon
     name: hello2
     index: 1
-  - user: synapse
-    name: matrix-synapse
-    index: 0
+  - null # { user: synapse, name: matrix-synapse, index: 0 }
   - user: prometheus
     name: prometheus
     index: 0
