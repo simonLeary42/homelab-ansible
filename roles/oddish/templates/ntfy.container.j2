@@ -3,7 +3,7 @@ Description=ntfy push notifications
 
 [Container]
 ContainerName=ntfy
-Image=docker.io/binwiederhier/ntfy:v2.36
+Image=docker.io/binwiederhier/ntfy:v{{ ntfy_version }}
 {% for _uidmap in uidmap %}
 UIDMap={{ _uidmap }}
 {% endfor %}

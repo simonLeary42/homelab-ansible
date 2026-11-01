@@ -3,7 +3,7 @@ Description=alertmanager
 
 [Container]
 ContainerName=alertmanager
-Image=ghcr.io/prometheus/alertmanager-linux-amd64:v0.34.2
+Image=ghcr.io/prometheus/alertmanager-linux-amd64:v{{ alertmanager_version }}
 {% for _uidmap in uidmap %}
 UIDMap={{ _uidmap }}
 {% endfor %}
