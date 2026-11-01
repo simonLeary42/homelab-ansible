@@ -107,6 +107,7 @@ su-systemctl CONTAINER_USER status CONTAINER_NAME
 
 Podman sends the stdout/stderr from all containers to the journal by default.
 You can view a container's output with `journalctl -e | grep CONTAINER_NAME` or `journalctl -f | grep CONTAINER_NAME`.
+Pipe to `batcat -l syslog` for colors.
 
 ### podman rootless UID mapping
 
