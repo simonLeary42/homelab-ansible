@@ -50,6 +50,7 @@
       - bfs
       - fzf
       - git-delta
+      - git-lfs
 
 - name: remove junk from MOTD
   file:
