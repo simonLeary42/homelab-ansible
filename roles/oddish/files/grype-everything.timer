@@ -1,5 +1,5 @@
 [Unit]
-Description=run grype-containers daily
+Description=run grype-everything daily
 
 [Timer]
 OnCalendar=daily

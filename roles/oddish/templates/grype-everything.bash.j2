@@ -2,15 +2,15 @@
 rc=0
 
 # after all the heartache of trying to get machinectl/systemd-run working properly,
-# I find out that the output from grype-containers.service is owned by user@XXX.service,
-# so it goes to syslog instead of grype-containers's journal
+# I find out that the output from grype-everything.service is owned by user@XXX.service,
+# so it goes to syslog instead of grype-everything's journal
 run_as_user() (
     set -euo pipefail
     local username=$1
     shift
     local uid_number="$(getent passwd "$username" | awk -F : '{print $3}')"
-    set -x
     cd /home/$username
+    set -x
     runuser --user="$username" -- env --ignore-environment HOME="/home/$username" XDG_RUNTIME_DIR="/run/user/$uid_number" "$@"
 )
 
@@ -19,5 +19,11 @@ while read -r ref; do
     run_as_user "{{ username }}" /usr/local/bin/grype "podman:$ref" --fail-on high || rc=1
  done < <(run_as_user "{{ username }}" /usr/bin/podman ps --format json | jq -r '.[].Image' | sort -u)
 {% endfor %}
+
+set -x
+for binary in /usr/local/bin/grype /usr/local/bin/node_exporter; do
+    /usr/local/bin/grype "file:$binary" --fail-on high || rc=1
+done
+set +x
 
 exit "$rc"

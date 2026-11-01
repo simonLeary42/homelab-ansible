@@ -3,4 +3,4 @@ Description=scan podman container images with grype for high severity vulnerabil
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/grype-containers.bash
+ExecStart=/usr/local/sbin/grype-everything.bash

@@ -193,32 +193,32 @@
 
 - name: install grype script
   unity.template_multi_diff.template:
-    src: grype-containers.bash.j2
-    dest: /usr/local/sbin/grype-containers.bash
+    src: grype-everything.bash.j2
+    dest: /usr/local/sbin/grype-everything.bash
     owner: root
     group: root
     mode: "0754"
 
-- name: install grype-containers.service
+- name: install grype-everything.service
   unity.copy_multi_diff.copy:
-    src: grype-containers.service
-    dest: /etc/systemd/system/grype-containers.service
+    src: grype-everything.service
+    dest: /etc/systemd/system/grype-everything.service
     owner: root
     group: root
     mode: "0644"
   notify: systemctl daemon-reload
 
-- name: install grype-containers.timer
+- name: install grype-everything.timer
   unity.copy_multi_diff.copy:
-    src: grype-containers.timer
-    dest: /etc/systemd/system/grype-containers.timer
+    src: grype-everything.timer
+    dest: /etc/systemd/system/grype-everything.timer
     owner: root
     group: root
     mode: "0644"
   notify: systemctl daemon-reload
 
-- name: systemctl enable grype-containers.timer
+- name: systemctl enable grype-everything.timer
   systemd_service:
-    name: grype-containers.timer
+    name: grype-everything.timer
     enabled: true
     state: started
