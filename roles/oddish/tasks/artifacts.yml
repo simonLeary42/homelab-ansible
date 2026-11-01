@@ -5,6 +5,7 @@
       export ACCOUNT='{{ artifacts_account }}'
       export MATRIX_WEBHOOK_URL='{{ artifacts_matrix_webhook_url }}'
       # export DISCORD_WEBHOOK_URL='{{ artifacts_discord_webhook_url }}'
+      export IPYTHONDIR=$PWD/.ipython
     dest: /home/simon/artifacts/.envrc
     owner: simon
     group: simon
