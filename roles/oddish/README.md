@@ -3,9 +3,8 @@
 Monolithic home server, named after the pokemon.
 
 Services exposed:
-* gitea (port 3003)
 * minecraft (port 25565)
-* ntfy
+* ntfy (port 9000)
 
 Configured internally:
 * apt sources
