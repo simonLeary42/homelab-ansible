@@ -75,8 +75,12 @@ Helpful guide on creating a new swap file: https://askubuntu.com/a/1206161
 
 * on initial installation, you have to login and connect oddish to the tailnet
 * assumes that the tailnet domain name is in the `{{ domain }}` variable
-* a `ntfy` service should be set up with `tailscale serve --service=svc:ntfy --https=443 http://localhost:9000`
-    * note: undo with `tailscale serve --service=svc:ntfy --https=443 off`
+* tailscale services need to be set up:
+    * `ntfy` 9000
+    * `prometheus` 9090
+    * `grafana` 3000
+    * `alertmanager` 9093
+    * `tailscale serve --service=svc:SERVICE_NAME_HERE --https=443 http://localhost:PORT_NUMBER_HERE`
 
 ## podman containers
 
