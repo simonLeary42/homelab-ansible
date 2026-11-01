@@ -3,23 +3,6 @@
     name: certbot
     state: present
 
-- name: install certbot-deploy-hook-gitea.bash
-  unity.template_multi_diff.template:
-    src: certbot-deploy-hook.bash.j2
-    dest: /usr/local/bin/certbot-deploy-hook-gitea.bash
-    owner: root
-    group: root
-    mode: "0755"
-  vars:
-    certbot_deploy_hook_copy:
-      - domain: "{{ domain }}"
-        owner: git
-        group: git
-        dest: /var/lib/gitea/ssl
-    certbot_deploy_hook_restart_services:
-      - domain: "{{ domain }}"
-        services: [gitea, apache2]
-
 - name: ensure certificate exists
   command:
     argv:
@@ -32,5 +15,4 @@
       - --standalone
       - -d
       - "{{ domain }}"
-      - --deploy-hook=/usr/local/bin/certbot-deploy-hook-gitea.bash
     creates: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
