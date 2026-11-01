@@ -3,7 +3,7 @@ Description=prometheus
 
 [Container]
 ContainerName=prometheus
-Image=ghcr.io/prometheus/prometheus-linux-amd64:v{{ prometheus_version }}-distroless
+Image=ghcr.io/prometheus/prometheus-linux-amd64:{{ prometheus_version }}
 {% for _uidmap in uidmap %}
 UIDMap={{ _uidmap }}
 {% endfor %}
