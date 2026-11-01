@@ -1,0 +1,6 @@
+[Unit]
+Description=scan podman container images with grype for high severity vulnerabilities
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/grype-containers.bash

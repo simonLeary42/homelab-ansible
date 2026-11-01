@@ -198,4 +198,27 @@
     owner: root
     group: root
     mode: "0754"
-# TODO systemd timer
+
+- name: install grype-containers.service
+  unity.copy_multi_diff.copy:
+    src: grype-containers.service
+    dest: /etc/systemd/system/grype-containers.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl daemon-reload
+
+- name: install grype-containers.timer
+  unity.copy_multi_diff.copy:
+    src: grype-containers.timer
+    dest: /etc/systemd/system/grype-containers.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl daemon-reload
+
+- name: systemctl enable grype-containers.timer
+  systemd_service:
+    name: grype-containers.timer
+    enabled: true
+    state: started
