@@ -133,3 +133,7 @@
 - name: artifacts
   import_tasks: artifacts.yml
   tags: [artifacts]
+
+- name: ntfy
+  import_tasks: ntfy.yml
+  tags: [ntfy]

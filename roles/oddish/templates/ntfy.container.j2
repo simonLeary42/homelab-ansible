@@ -10,10 +10,10 @@ UIDMap={{ _uidmap }}
 {% for _gidmap in gidmap %}
 GIDMap={{ _gidmap }}
 {% endfor %}
-# PublishPort=8008:8008
-Network=host
+PublishPort=9000:80
 Environment=UID=0
 Environment=GID=0
+Volume=/var/lib/ntfy:/var/lib/ntfy
 Exec=serve
 # https://docs.ntfy.sh/config/#config-generator
 Environment=NTFY_BASE_URL="https://ntfy.{{ ansible_fqdn }}"

@@ -15,3 +15,12 @@
     system: true
     create_home: true
     state: present
+
+- name: setup /var/lib/ntfy/
+  unity.file_multi_diff.file:
+    path: /var/lib/ntfy
+    state: directory
+    owner: ntfy
+    group: ntfy
+    mode: "0755"
+  notify: systemctl --user -M ntfy@ restart ntfy

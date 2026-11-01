@@ -28,3 +28,6 @@ podman_containers:
   - user: alertmanager
     name: alertmanager
     index: 0
+  - user: ntfy
+    name: ntfy
+    index: 0
