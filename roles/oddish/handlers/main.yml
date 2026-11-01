@@ -30,16 +30,6 @@
   command: systemctl --user -M alertmanager@ daemon-reload
   changed_when: true
 
-- name: systemctl reload apache2
-  systemd_service:
-    name: apache2
-    state: reloaded
-
-- name: systemctl restart apache2
-  systemd_service:
-    name: apache2
-    state: restarted
-
 - name: systemctl restart node_exporter
   systemd_service:
     name: node_exporter
@@ -100,14 +90,6 @@
 
 - name: systemctl --user -M grafana@ restart grafana
   command: systemctl --user -M grafana@ restart grafana
-  changed_when: true
-
-- name: systemctl --user -M synapse@ restart matrix-synapse
-  command: systemctl --user -M synapse@ restart matrix-synapse
-  changed_when: true
-
-- name: systemctl --user -M hookshot@ restart matrix-hookshot
-  command: systemctl --user -M hookshot@ restart matrix-hookshot
   changed_when: true
 
 - name: systemctl --user -M alertmanager@ restart alertmanager

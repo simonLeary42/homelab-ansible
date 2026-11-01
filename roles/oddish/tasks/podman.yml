@@ -21,7 +21,7 @@
       auths:
         docker.io:
           auth: "{{ (podman_dockerhub_username ~ ':' ~ podman_dockerhub_token) | b64encode }}"
-  loop: "{{ podman_containers }}"
+  loop: "{{ podman_containers | rejectattr('defunct', 'defined') }}"
   loop_control: { label: "{{ item.name }}" }
   when: item.requires_dockerhub_login | default(false)
 
@@ -50,7 +50,7 @@
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
     mode: "0755"
-  loop: "{{ podman_containers }}"
+  loop: "{{ podman_containers | rejectattr('defunct', 'defined') }}"
   loop_control: { label: "{{ item.name }}" }
   vars:
     uid_number: "{{ getent_passwd[item.user][1] }}"
@@ -62,7 +62,7 @@
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
     mode: "0644"
-  loop: "{{ podman_containers }}"
+  loop: "{{ podman_containers | rejectattr('defunct', 'defined') }}"
   loop_control: { label: "{{ item.name }}" }
   vars:
     # prometheus polls every 15 seconds, if restart too quickly, failure will go un-noticed
@@ -78,7 +78,7 @@
     gidmap: "{{ uidmap }}"
   notify: |
     {% set output = [] %}
-    {% for podman_container in podman_containers %}
+    {% for podman_container in (podman_containers | rejectattr('defunct', 'defined')) %}
     {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ daemon-reload') %}
     {% set _ = output.append('systemctl --user -M ' ~ podman_container.user ~ '@ restart ' ~ podman_container.name) %}
     {% endfor %}
@@ -89,7 +89,7 @@
   become: true
   become_user: "{{ item }}"
   changed_when: false
-  loop: "{{ podman_containers | map(attribute='user') | unique }}"
+  loop: "{{ podman_containers | rejectattr('defunct', 'defined') | map(attribute='user') | unique }}"
   register: _result
   failed_when: (_result.rc != 0) or ((_result.stdout | trim) == "")
 
@@ -97,7 +97,7 @@
   ansible.builtin.command:
     cmd: loginctl enable-linger "{{ item.user }}"
     creates: "/var/lib/systemd/linger/{{ item.user }}"
-  loop: "{{ podman_containers }}"
+  loop: "{{ podman_containers | rejectattr('defunct', 'defined') }}"
   loop_control: { label: "{{ item.name }}" }
 
 - name: install su-systemctl helper script
@@ -142,7 +142,7 @@
   vars:
     _args: |-
       {% set output = [] %}
-      {% for podman_container in podman_containers %}
+      {% for podman_container in (podman_containers | rejectattr('defunct', 'defined')) %}
       {% set _ = output.append(podman_container.user) %}
       {% set _ = output.append(podman_container.name) %}
       {% endfor %}

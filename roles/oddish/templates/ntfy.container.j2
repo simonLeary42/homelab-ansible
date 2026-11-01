@@ -1,0 +1,36 @@
+[Unit]
+Description=ntfy push notifications
+
+[Container]
+ContainerName=ntfy
+Image=docker.io/binwiederhier/ntfy:v2.36
+{% for _uidmap in uidmap %}
+UIDMap={{ _uidmap }}
+{% endfor %}
+{% for _gidmap in gidmap %}
+GIDMap={{ _gidmap }}
+{% endfor %}
+# PublishPort=8008:8008
+Network=host
+Environment=UID=0
+Environment=GID=0
+Exec=serve
+# https://docs.ntfy.sh/config/#config-generator
+Environment=NTFY_BASE_URL="https://ntfy.{{ domain }}"
+Environment=NTFY_BEHIND_PROXY="true"
+Environment=NTFY_AUTH_FILE="/var/lib/ntfy/auth.db"
+Environment=NTFY_AUTH_DEFAULT_ACCESS="deny-all"
+Environment=NTFY_ENABLE_LOGIN="true"
+Environment=NTFY_REQUIRE_LOGIN="true"
+Environment=NTFY_WEB_PUSH_PUBLIC_KEY="{{ ntfy_web_push_public_key }}"
+Environment=NTFY_WEB_PUSH_PRIVATE_KEY="{{ ntfy_web_push_private_key }}"
+Environment=NTFY_WEB_PUSH_FILE="/var/lib/ntfy/webpush.db"
+Environment=NTFY_WEB_PUSH_EMAIL_ADDRESS="{{ ntfy_email }}"
+Environment=NTFY_AUTH_USERS='{{ ntfy_auth_users }}'
+
+[Service]
+Restart=on-failure
+RestartSec={{ restart_sec }}
+
+[Install]
+WantedBy=default.target
