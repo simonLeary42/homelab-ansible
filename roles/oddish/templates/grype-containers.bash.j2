@@ -1,0 +1,8 @@
+#!/bin/bash
+rc=0
+{% for username in (podman_containers | rejectattr('defunct', 'defined') | map(attribute='user') | unique) %}
+while read -r ref; do
+    systemd-run --pipe --quiet --user --machine="{{ username }}@" grype "podman:$ref" --fail-on high || rc=1
+done < <(systemd-run --pipe --quiet --user --machine="{{ username }}@" podman ps --format json | jq -r '.[].Image' | sort -u)
+{% endfor %}
+exit "$rc"
