@@ -4,19 +4,10 @@ Monolithic home server, named after the pokemon.
 
 Services exposed:
 * minecraft (port 25565)
+* prometheus (port 9090)
+* prometheus alertmanager (port 9093)
+* grafana (port 3000)
 * ntfy (port 9000)
-
-Configured internally:
-* apt sources
-* snapd is removed
-* dynamic DNS
-* podman, UID namespaces
-* prometheus
-* prometheus node exporter
-* prometheus alert manager
-* grafana
-* btrfs snapshots
-* ssh
 
 ## usage
 
@@ -27,10 +18,8 @@ At time of writing, all role variables are defined inside the role, and nothing 
 ### tags
 
 * `alertmanager`
-* `apache`
 * `artifacts`
 * `btrfs`
-* `hookshot`
 * `minecraft`
 * `network`
 * `node_exporter`
@@ -39,7 +28,6 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `podman`
 * `prometheus`
 * `ssh`
-* `synapse`
 * `tailscale`
 <!-- * `wireguard` -->
 
