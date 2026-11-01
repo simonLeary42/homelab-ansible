@@ -74,8 +74,10 @@ Helpful guide on creating a new swap file: https://askubuntu.com/a/1206161
 
 ## manual tailscale setup
 
-* on initial installation, ansible will fail to get a tailscale cert, you have to login and connect oddish to the tailnet
+* on initial installation, you have to login and connect oddish to the tailnet
 * assumes that the tailnet domain name is in the `{{ domain }}` variable
+* a `ntfy` service should be set up with `tailscale serve --service=svc:ntfy --https=443 http://localhost:9000`
+    * note: undo with `tailscale serve --service=svc:ntfy --https=443 off`
 
 ## podman containers
 

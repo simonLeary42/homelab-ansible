@@ -19,46 +19,4 @@
     name: tailscale
     state: present
   notify: systemctl restart tailscaled
-# NOTE: despite that the tailscaled systemd service will be up and running at this point
-# you still have to run `tailscale up` and follow the link and authenticate in browser
-# to join a tailnet
-
-- name: setup SSL cert if not already exists
-  command:
-    argv:
-      - tailscale
-      - cert
-      - --cert-file=/etc/ssl/private/{{ ansible_fqdn }}.crt
-      - --key-file=/etc/ssl/private/{{ ansible_fqdn }}.key
-      - "{{ ansible_fqdn }}"
-    creates: /etc/ssl/private/{{ ansible_fqdn }}.crt
-  notify:
-    - systemctl reload nginx
-
-- name: install tailscale-cert.service
-  unity.template_multi_diff.template:
-    src: tailscale-cert.service.j2
-    dest: /etc/systemd/system/tailscale-cert.service
-    owner: root
-    group: root
-    mode: "0644"
-  register: tailscale_cert_service
-
-- name: install tailscale-cert.timer
-  unity.copy_multi_diff.copy:
-    src: tailscale-cert.timer
-    dest: /etc/systemd/system/tailscale-cert.timer
-    owner: root
-    group: root
-    mode: "0644"
-  register: tailscale_cert_timer
-
-- name: systemctl daemon-reload
-  command: systemctl daemon-reload
-  changed_when: true
-  when: tailscale_cert_service.changed or tailscale_cert_timer.changed
-
-- name: systemctl enable tailscale-cert.timer
-  systemd:
-    name: tailscale-cert.timer
-    enabled: true
+# NOTE: manual setup required, see README.md
