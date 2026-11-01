@@ -51,6 +51,7 @@
       - fzf
       - git-delta
       - git-lfs
+      - systemd-container # machinectl
 
 - name: remove junk from MOTD
   file:
