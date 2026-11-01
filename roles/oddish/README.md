@@ -3,7 +3,6 @@
 Monolithic home server, named after the pokemon.
 
 Services exposed:
-* gitea (port 3003)
 * matrix-synapse (port 8448)
 * minecraft (port 25565)
 
@@ -36,7 +35,6 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `artifacts`
 * `btrfs`
 * `certbot`
-* `gitea`
 * `hookshot`
 * `minecraft`
 * `network`
@@ -67,10 +65,6 @@ After formatting the rootfs as btrfs, you have to create the new subvolumes, cop
 This role also expects that there is no active swap file on the `@` subvolume.
 This can be done by disabling swap or creating a `@swap` subvolume and configuring the system to use that instead of `/swap.img`.
 Helpful guide on creating a new swap file: https://askubuntu.com/a/1206161
-
-## manual gitea setup
-
-* TODO user creation
 
 ## manual matrix setup
 
