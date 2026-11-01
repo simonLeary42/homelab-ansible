@@ -32,3 +32,7 @@ receivers:
 - name: webhook_receiver
   webhook_configs:
   - url: "{{ alertmanager_webhook }}"
+    http_config:
+      basic_auth:
+        username: ntfyadmin
+        password: "{{ ntfy_admin_password }}"
