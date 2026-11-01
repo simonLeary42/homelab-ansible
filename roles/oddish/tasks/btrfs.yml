@@ -63,7 +63,7 @@
     - /var/lib/containers
     - /var/lib/prometheus
     - /var/lib/grafana
-    - /var/lib/matrix-synapse
+    - /var/lib/ntfy
     - /opt/minecraft/matt/world
 
 - name: install /etc/btrbk.conf

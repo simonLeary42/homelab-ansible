@@ -1,0 +1,26 @@
+# NOTE: podman-related ntfy tasks are in tasks/podman.yml, not tasks/ntfy.yml
+
+- name: create the ntfy group
+  ansible.builtin.group:
+    name: ntfy
+    system: true
+    state: present
+
+- name: create the ntfy user account
+  ansible.builtin.user:
+    name: ntfy
+    group: ntfy
+    shell: /bin/bash
+    password_lock: true
+    system: true
+    create_home: true
+    state: present
+
+- name: setup /var/lib/ntfy/
+  unity.file_multi_diff.file:
+    path: /var/lib/ntfy
+    state: directory
+    owner: ntfy
+    group: ntfy
+    mode: "0755"
+  notify: systemctl --user -M ntfy@ restart ntfy

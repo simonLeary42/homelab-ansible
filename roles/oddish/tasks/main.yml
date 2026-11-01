@@ -51,6 +51,7 @@
       - fzf
       - git-delta
       - git-lfs
+      - systemd-container # machinectl
 
 - name: remove junk from MOTD
   file:
@@ -79,19 +80,6 @@
   import_tasks: network.yml
   tags: [network]
 
-- name: certbot
-  import_tasks: certbot.yml
-  tags: [certbot]
-
-- name: DDNS
-  unity.copy_multi_diff.copy:
-    content: |
-      */5 * * * * root echo url="https://www.duckdns.org/update?domains={{ duckdns_domain }}&token={{ duckdns_token }}" | curl -k -o /var/log/ddns.log -K -
-    dest: /etc/cron.d/duckdns
-    owner: root
-    group: root
-    mode: "0600"
-
 # - name: wireguard
 #   import_tasks: wireguard.yml
 #   tags: [wireguard]
@@ -99,18 +87,6 @@
 # - name: bnkr_nfs
 #   import_tasks: bnkr_nfs.yml
 #   tags: [bnkr_nfs]
-
-- name: synapse
-  import_tasks: synapse.yml
-  tags: [synapse]
-
-- name: apache
-  import_tasks: apache.yml
-  tags: [apache]
-
-- name: hookshot
-  import_tasks: hookshot.yml
-  tags: [hookshot]
 
 - name: prometheus
   import_tasks: prometheus.yml
@@ -158,3 +134,7 @@
 - name: artifacts
   import_tasks: artifacts.yml
   tags: [artifacts]
+
+- name: ntfy
+  import_tasks: ntfy.yml
+  tags: [ntfy]

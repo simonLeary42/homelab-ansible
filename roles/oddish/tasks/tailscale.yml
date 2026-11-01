@@ -19,6 +19,4 @@
     name: tailscale
     state: present
   notify: systemctl restart tailscaled
-# NOTE: despite that the tailscaled systemd service will be up and running at this point
-# you still have to run `tailscale up` and follow the link and authenticate in browser
-# to join a tailnet
+# NOTE: manual setup required, see README.md

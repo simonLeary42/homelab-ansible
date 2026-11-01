@@ -6,14 +6,6 @@
   command: systemctl --user -M simon@ daemon-reload
   changed_when: true
 
-- name: systemctl --user -M hookshot@ daemon-reload
-  command: systemctl --user -M hookshot@ daemon-reload
-  changed_when: true
-
-- name: systemctl --user -M synapse@ daemon-reload
-  command: systemctl --user -M synapse@ daemon-reload
-  changed_when: true
-
 - name: systemctl --user -M podman@ daemon-reload
   command: systemctl --user -M podman@ daemon-reload
   changed_when: true
@@ -30,15 +22,9 @@
   command: systemctl --user -M alertmanager@ daemon-reload
   changed_when: true
 
-- name: systemctl reload apache2
-  systemd_service:
-    name: apache2
-    state: reloaded
-
-- name: systemctl restart apache2
-  systemd_service:
-    name: apache2
-    state: restarted
+- name: systemctl --user -M ntfy@ daemon-reload
+  command: systemctl --user -M ntfy@ daemon-reload
+  changed_when: true
 
 - name: systemctl restart node_exporter
   systemd_service:
@@ -86,6 +72,12 @@
   become: true
   become_user: alertmanager
 
+- name: sudo -u ntfy podman system migrate
+  command: podman system migrate
+  changed_when: true
+  become: true
+  become_user: ntfy
+
 - name: systemctl --user -M simon@ restart hello
   command: systemctl --user -M simon@ restart hello
   changed_when: true
@@ -102,16 +94,12 @@
   command: systemctl --user -M grafana@ restart grafana
   changed_when: true
 
-- name: systemctl --user -M synapse@ restart matrix-synapse
-  command: systemctl --user -M synapse@ restart matrix-synapse
-  changed_when: true
-
-- name: systemctl --user -M hookshot@ restart matrix-hookshot
-  command: systemctl --user -M hookshot@ restart matrix-hookshot
-  changed_when: true
-
 - name: systemctl --user -M alertmanager@ restart alertmanager
   command: systemctl --user -M alertmanager@ restart alertmanager
+  changed_when: true
+
+- name: systemctl --user -M ntfy@ restart ntfy
+  command: systemctl --user -M ntfy@ restart ntfy
   changed_when: true
 
 - name: systemctl restart tailscaled

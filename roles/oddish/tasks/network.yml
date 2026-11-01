@@ -1,3 +1,11 @@
+- name: install /etc/hosts
+  unity.template_multi_diff.template:
+    src: etc-hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: systemctl enable wpa_supplicant
   systemd_service:
     name: wpa_supplicant

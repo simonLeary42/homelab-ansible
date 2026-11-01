@@ -1,7 +1,7 @@
 # global:
 #   # The smarthost and SMTP sender used for mail notifications.
 #   smtp_smarthost: 'localhost:25'
-#   smtp_from: 'alertmanager@{{ domain }}'
+#   smtp_from: 'alertmanager@{{ ansible_fqdn }}'
 #   smtp_auth_username: 'alertmanager'
 #   smtp_auth_password: 'password'
 
@@ -32,3 +32,7 @@ receivers:
 - name: webhook_receiver
   webhook_configs:
   - url: "{{ alertmanager_webhook }}"
+    http_config:
+      basic_auth:
+        username: ntfyadmin
+        password: "{{ ntfy_admin_password }}"
