@@ -10,7 +10,7 @@
   ansible.builtin.user:
     name: ntfy
     group: ntfy
-    shell: /usr/sbin/nologin
+    shell: /bin/bash
     password_lock: true
     system: true
     create_home: true

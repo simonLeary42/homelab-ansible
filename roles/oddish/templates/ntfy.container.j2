@@ -16,7 +16,7 @@ Environment=GID=0
 Volume=/var/lib/ntfy:/var/lib/ntfy
 Exec=serve
 # https://docs.ntfy.sh/config/#config-generator
-Environment=NTFY_BASE_URL="https://ntfy.{{ ansible_fqdn }}"
+Environment=NTFY_BASE_URL="https://ntfy.{{ domain }}"
 Environment=NTFY_BEHIND_PROXY="true"
 Environment=NTFY_AUTH_FILE="/var/lib/ntfy/auth.db"
 Environment=NTFY_AUTH_DEFAULT_ACCESS="deny-all"
@@ -27,6 +27,7 @@ Environment=NTFY_WEB_PUSH_PRIVATE_KEY="{{ ntfy_web_push_private_key }}"
 Environment=NTFY_WEB_PUSH_FILE="/var/lib/ntfy/webpush.db"
 Environment=NTFY_WEB_PUSH_EMAIL_ADDRESS="{{ ntfy_email }}"
 Environment=NTFY_AUTH_USERS='{{ ntfy_auth_users }}'
+Environment=NTFY_LOG_LEVEL="DEBUG"
 
 [Service]
 Restart=on-failure
