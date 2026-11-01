@@ -1,0 +1,14 @@
+[Unit]
+Description=Tailscale SSL Service Renewal
+After=network.target
+After=syslog.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+WorkingDirectory=/etc/ssl/private/
+ExecStart=tailscale cert {{ ansible_fqdn }}
+
+[Install]
+WantedBy=multi-user.target

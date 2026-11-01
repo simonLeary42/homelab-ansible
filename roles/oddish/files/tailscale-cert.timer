@@ -1,0 +1,10 @@
+[Unit]
+Description=Renew Tailscale cert
+
+[Timer]
+OnCalendar=weekly
+Unit=%i.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

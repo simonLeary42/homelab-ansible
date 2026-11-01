@@ -72,6 +72,11 @@ Helpful guide on creating a new swap file: https://askubuntu.com/a/1206161
 
 * TODO import dashboard "node exporter full"
 
+## manual tailscale setup
+
+* on initial installation, ansible will fail to get a tailscale cert, you have to login and connect oddish to the tailnet
+* assumes that the tailnet domain name is in the `{{ domain }}` variable
+
 ## podman containers
 
 Podman containers are run "rootless" by unprivileged users.
