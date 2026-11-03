@@ -107,10 +107,35 @@
     name: tailscaled
     state: restarted
 
-- name: systemctl restart systemd_user_service_exporter
+- name: systemctl restart systemd_user_service_exporter-simon
   systemd_service:
-    name: systemd_user_service_exporter
+    name: systemd_user_service_exporter-simon
     state: restarted
+    daemon_reload: true
+
+- name: systemctl restart systemd_user_service_exporter-prometheus
+  systemd_service:
+    name: systemd_user_service_exporter-prometheus
+    state: restarted
+    daemon_reload: true
+
+- name: systemctl restart systemd_user_service_exporter-grafana
+  systemd_service:
+    name: systemd_user_service_exporter-grafana
+    state: restarted
+    daemon_reload: true
+
+- name: systemctl restart systemd_user_service_exporter-alertmanager
+  systemd_service:
+    name: systemd_user_service_exporter-alertmanager
+    state: restarted
+    daemon_reload: true
+
+- name: systemctl restart systemd_user_service_exporter-ntfy
+  systemd_service:
+    name: systemd_user_service_exporter-ntfy
+    state: restarted
+    daemon_reload: true
 
 - name: systemctl restart minecraft-matt
   systemd_service:

@@ -2,6 +2,12 @@
   include_vars: secrets.yml
   tags: [always]
 
+# needed for podman
+# needed for prometheus because the user service exporter uses the uidnumber in the port number
+- name: getent passwd
+  getent: { database: passwd }
+  tags: [always]
+
 - name: ssh
   import_tasks: ssh.yml
   tags: [ssh]

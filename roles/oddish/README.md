@@ -160,4 +160,4 @@ These alerts do have one big flaw: they check for `state=failed`, but when a ser
 `prometheus-podman-exporter` doesn't produce metrics which are useful to me, and can only represent user-scope services for one user.
 `systemd_exporter` has the same problem as `node_exporter` explained above, and can only represent user-scope services for one user.
 Being limited to one user is not a complete dealbreaker, I could launch a `systemd_exporter` for every single user using different port numbers and configure prometheus to scrape them all, but I hate adding unnecessary moving parts.
-Instead, I build my own exporter that runs a quick-and-dirty python `http.server` as root and gathers service info using `systemctl show`.
+Instead, I build my own exporter: a quick-and-dirty python `http.server` that runs as each podman user on port `9000 + uid` and gathers service info using `systemctl --user show`.

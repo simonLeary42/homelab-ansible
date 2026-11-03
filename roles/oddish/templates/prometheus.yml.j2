@@ -11,7 +11,9 @@ scrape_configs:
     static_configs:
       - targets:
           - "localhost:9100"
-          - "localhost:9999"
+{% for user in podman_containers | rejectattr('defunct', 'defined') | map(attribute='user') | unique %}
+          - "localhost:{{ 9000 + (getent_passwd[user][1] | int) }}"
+{% endfor %}
 
 alerting:
   alertmanagers:
