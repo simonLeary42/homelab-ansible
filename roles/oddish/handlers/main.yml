@@ -146,3 +146,8 @@
   systemd_service:
     name: rsyslog
     state: restarted
+
+- name: systemctl restart systemd-journald
+  systemd_service:
+    name: systemd-journald
+    state: restarted

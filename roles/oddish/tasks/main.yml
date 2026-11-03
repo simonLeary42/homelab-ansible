@@ -137,6 +137,25 @@
     mode: "0644"
   notify: systemctl restart rsyslog
 
+- name: setup /etc/systemd/journald.conf.d
+  file:
+    path: /etc/systemd/journald.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: install journald size limit
+  copy:
+    content: |
+      [Journal]
+      SystemMaxUse=1G
+    dest: /etc/systemd/journald.conf.d/size.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: systemctl restart systemd-journald
+
 - name: artifacts
   import_tasks: artifacts.yml
   tags: [artifacts]
