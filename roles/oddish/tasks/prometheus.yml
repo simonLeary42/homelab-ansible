@@ -38,6 +38,7 @@
     owner: prometheus
     group: prometheus
     mode: "0644"
+    checksum: sha256:ba4592325572caf4c3962c448f6e8ae98b631e230228f6421c68d5fb4d6899d5
   notify: systemctl --user -M prometheus@ restart prometheus
 
 - name: install /etc/prometheus/custom_alerts.yml

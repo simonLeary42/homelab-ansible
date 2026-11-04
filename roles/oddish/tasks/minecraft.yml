@@ -40,6 +40,7 @@
     owner: minecraft
     group: minecraft
     mode: "0644"
+    checksum: sha256:f1d2bafd0b3b97630b0cdd8e890cd102db3dbe60877a38a5c813aa929e691127
 
 - name: symlink server.jar
   file:
@@ -55,11 +56,14 @@
     owner: minecraft
     group: minecraft
     mode: "0644"
+    checksum: "{{ item.checksum }}"
   loop:
     - url: "https://cdn.modrinth.com/data/P7dR8mSH/versions/UWwhUX3k/fabric-api-0.160.0%2B26.2.jar"
       dest: /opt/minecraft/matt/mods/fabric-api-0.160.0+26.2.jar
+      checksum: sha256:5f3dff88e1661166e222213302b25ace6c36dc3683804cbd4b5acf93138ea05e
     - url: "https://cdn.modrinth.com/data/rd9rKuJT/versions/8bBHJTea/disconnect-packet-fix-fabric-2.2.0.jar"
       dest: /opt/minecraft/matt/mods/disconnect-packet-fix-fabric-2.2.0.jar
+      checksum: sha256:66af2e55324805169d2634a8c2a8a2b6f8fb935fa378084159918e8107633c77
   notify: systemctl restart minecraft-matt
 
 - name: install server.properties
