@@ -5,7 +5,7 @@
       export ACCOUNT='{{ artifacts_account }}'
       export NTFY_USERNAME=ntfyadmin
       export NTFY_PASSWORD='{{ ntfy_admin_password }}'
-      export NTFY_URL='https://ntfy.{{ domain }}/{{ ntfy_oddish_topic }}  '
+      export NTFY_URL='https://ntfy.{{ domain }}/{{ ntfy_oddish_topic }}'
       export IPYTHONDIR=$PWD/.ipython
     dest: /home/simon/artifacts/.envrc
     owner: simon
