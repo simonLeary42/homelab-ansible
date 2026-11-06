@@ -3,8 +3,9 @@
     content: |
       export API_TOKEN='{{ artifacts_api_token }}'
       export ACCOUNT='{{ artifacts_account }}'
-      export MATRIX_WEBHOOK_URL='{{ artifacts_matrix_webhook_url }}'
-      # export DISCORD_WEBHOOK_URL='{{ artifacts_discord_webhook_url }}'
+      export NTFY_USERNAME=ntfyadmin
+      export NTFY_PASSWORD='{{ ntfy_admin_password }}'
+      export NTFY_URL='https://ntfy.{{ domain }}/{{ ntfy_oddish_topic }}  '
       export IPYTHONDIR=$PWD/.ipython
     dest: /home/simon/artifacts/.envrc
     owner: simon
