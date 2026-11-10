@@ -29,9 +29,17 @@
 - name: install/upgrade node_exporter
   when: (installed_node_exporter_version.stdout | default("") | trim) != node_exporter_version
   block:
-    - name: download and extract tarball
+    - name: download tarball
+      get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: /tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
+        owner: node_exporter
+        group: node_exporter
+        mode: "0644"
+        checksum: "{{ node_exporter_checksum }}"
+    - name: extract tarball
       unarchive:
-        src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        src: /tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
         dest: /tmp/
         remote_src: true
       become: true

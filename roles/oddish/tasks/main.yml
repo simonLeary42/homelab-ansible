@@ -163,3 +163,7 @@
 - name: ntfy
   import_tasks: ntfy.yml
   tags: [ntfy]
+
+- name: grype
+  import_tasks: grype.yml
+  tags: [grype]

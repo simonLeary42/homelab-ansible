@@ -29,6 +29,7 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `prometheus`
 * `ssh`
 * `tailscale`
+* `grype`
 <!-- * `wireguard` -->
 
 ## manual wifi setup
