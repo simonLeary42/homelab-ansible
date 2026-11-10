@@ -1,20 +1,34 @@
 groups:
   - name: custom_alerts
     rules:
+      - alert: "HostSystemdServiceFailed"
+        expr: node_systemd_unit_state{state="failed", name!="grype-everything.service"} == 1
+        labels:
+          severity: warning
+        annotations:
+          summary: "systemd service {{ $labels.name }} failed (instance {{ $labels.instance }})"
+          description: "systemd service {{ $labels.name }} is in the failed state on {{ $labels.instance }}"
+      - alert: "GrypeVulnerabilitiesFound"
+        expr: node_systemd_unit_state{state="failed", name="grype-everything.service"} == 1
+        labels:
+          severity: warning
+        annotations:
+          summary: "grype found high severity vulnerabilities (instance {{ $labels.instance }})"
+          description: "grype-everything.service failed, check: journalctl -u grype-everything.service (instance {{ $labels.instance }})"
       - alert: "systemd ExecMainStatus != 0"
         expr: systemd_unit_exec_main_status != 0
         labels:
           severity: warning
         annotations:
-          summary: "systemd service crashed! (ExecMainStatus == {{ $value }})"
-          description: "systemd service crashed! (ExecMainStatus == {{ $value }})"
+          summary: "systemd service {{ $labels.name }} crashed! (ExecMainStatus == {{ $value }})"
+          description: "systemd service {{ $labels.name }} crashed! (ExecMainStatus == {{ $value }})"
       - alert: "systemd Result != 'success'"
         expr: systemd_unit_result_success != 1
         labels:
           severity: warning
         annotations:
-          summary: "systemd service crashed! (Result != 'success')"
-          description: "systemd service crashed! (Result != 'success')"
+          summary: "systemd service {{ $labels.name }} crashed! (Result != 'success')"
+          description: "systemd service {{ $labels.name }} crashed! (Result != 'success')"
       - alert: "btrfs disk filling up"
         expr: "(100 * ((node_btrfs_device_size_bytes - node_btrfs_device_unused_bytes) / node_btrfs_device_size_bytes)) > 75"
         labels:

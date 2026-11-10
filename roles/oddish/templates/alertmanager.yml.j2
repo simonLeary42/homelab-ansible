@@ -17,7 +17,10 @@ route:
   repeat_interval: 24h
   receiver: webhook_receiver
   # child routes
-  routes: []
+  routes:
+    # disable the normal "service crashed" alert in favor of my custom "service failed" alert
+    - matchers: [alertname="HostSystemdServiceCrashed"]
+      receiver: "null"
 
 # inhibit_rules:
 #   - source_matchers: [severity="critical"]
@@ -30,6 +33,7 @@ route:
 #     equal: [alertname, cluster, service]
 
 receivers:
+- name: "null"
 - name: webhook_receiver
   webhook_configs:
   - url: "{{ alertmanager_webhook }}"
