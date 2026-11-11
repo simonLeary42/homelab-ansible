@@ -24,6 +24,9 @@ set -x
 for binary in /usr/local/bin/grype /usr/local/bin/node_exporter; do
     /usr/local/bin/grype "file:$binary" --fail-on high || rc=1
 done
+for dir in /home/simon/opt/scutiger; do
+    /usr/local/bin/grype "dir:$dir" --fail-on high || rc=1
+done
 set +x
 
 exit "$rc"
