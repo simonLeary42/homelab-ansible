@@ -1,0 +1,36 @@
+- name: install scutiger build dependencies
+  become: true
+  apt:
+    name:
+      - zlib1g-dev
+      - libpcre2-dev
+      - libgit2-dev
+    state: present
+
+- name: setup scutiger git repo
+  git:
+    repo: https://github.com/bk2204/scutiger
+    dest: /home/simon/opt/scutiger
+    version: "{{ scutiger_version }}"
+  register: scutiger_git
+  become: true
+  become_user: simon
+
+- name: build scutiger
+  command:
+    cmd: cargo build --release -p scutiger-lfs --bin git-lfs-transfer
+    chdir: /home/simon/opt/scutiger
+  changed_when: true
+  when: scutiger_git.changed
+  become: true
+  become_user: simon
+
+- name: install git-lfs-transfer binary
+  copy:
+    src: /home/simon/opt/scutiger/target/release/git-lfs-transfer
+    remote_src: true
+    dest: /usr/local/bin/git-lfs-transfer
+    owner: root
+    group: root
+    mode: "0755"
+  when: scutiger_git.changed

@@ -30,6 +30,8 @@ At time of writing, all role variables are defined inside the role, and nothing 
 * `ssh`
 * `tailscale`
 * `grype`
+* `rustup`
+* `scutiger`
 <!-- * `wireguard` -->
 
 ## manual wifi setup

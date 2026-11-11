@@ -58,6 +58,7 @@
       - git-delta
       - git-lfs
       - systemd-container # machinectl
+      - build-essential
 
 - name: remove junk from MOTD
   file:
@@ -167,3 +168,11 @@
 - name: grype
   import_tasks: grype.yml
   tags: [grype]
+
+- name: rustup
+  import_tasks: rustup.yml
+  tags: [rustup]
+
+- name: scutiger
+  import_tasks: scutiger.yml
+  tags: [scutiger]

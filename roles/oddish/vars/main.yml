@@ -6,6 +6,8 @@ ntfy_version: v2.37.2@sha256:1875ddcf815c8a3c981d6d78c67a93452d0abba79b1ab9520b1
 grafana_version: 13.3.0-distroless@sha256:540b8afb775bf34aefce417e4329039daa5d44b6f2fbda6881397b1b247ca7df
 grype_version: 0.121.3
 grype_checksum: sha256:e9da18cc1429e786722e32161288103600efffd8e483c90761f90485bd1bec85
+rust_version: 1.99.1
+scutiger_version: 614a4f01cfbe6aafa355ca92ed6d1581b5cfc088
 # * each user needs to have their own handlers added to handlers/main.yml
 # * each container needs to have its own handler added to handlers/main.yml
 # * the order must not be changed!

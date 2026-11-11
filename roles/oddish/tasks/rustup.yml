@@ -1,0 +1,48 @@
+- name: check if rustc installed
+  stat: { path: /usr/local/bin/rustc }
+  register: usr_local_bin_rustc
+
+- name: check rustc version
+  shell: |
+    set -o pipefail
+    rustc --version | awk '{print $2}'
+  register: installed_rustc_version
+  changed_when: false
+  check_mode: false
+  when: usr_local_bin_rustc.stat.exists
+
+- name: install/upgrade rustc
+  when: (installed_rustc_version.stdout | default("") | trim) != rust_version
+  block:
+    - name: download rust standalone installer
+      get_url:
+        url: "https://static.rust-lang.org/dist/rust-{{ rust_version }}-x86_64-unknown-linux-gnu.tar.gz"
+        dest: "/tmp/rust-{{ rust_version }}-x86_64-unknown-linux-gnu.tar.gz"
+        mode: "0644"
+        force: false
+    - name: setup parent dir
+      file:
+        path: "/tmp/rust-{{ rust_version }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+    - name: extract rust standalone installer
+      unarchive:
+        src: "/tmp/rust-{{ rust_version }}-x86_64-unknown-linux-gnu.tar.gz"
+        dest: "/tmp/rust-{{ rust_version }}"
+        remote_src: true
+        extra_opts: [--strip-components=1]
+        creates: "/tmp/rust-{{ rust_version }}/install.sh"
+    - name: install rust with standalone installer
+      command:
+        cmd: ./install.sh --without=rust-docs
+        chdir: "/tmp/rust-{{ rust_version }}"
+      changed_when: true
+    - name: remove rust standalone installer files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/tmp/rust-{{ rust_version }}"
+        - "/tmp/rust-{{ rust_version }}-x86_64-unknown-linux-gnu.tar.gz"
