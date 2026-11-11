@@ -17,7 +17,7 @@ run_as_user() (
 {% for username in (podman_containers | rejectattr('defunct', 'defined') | map(attribute='user') | unique) %}
 while read -r ref; do
     run_as_user "{{ username }}" /usr/local/bin/grype "podman:$ref" --fail-on high || rc=1
- done < <(run_as_user "{{ username }}" /usr/bin/podman ps --format json | jq -r '.[].Image' | sort -u)
+done < <(run_as_user "{{ username }}" /usr/bin/podman ps --format json | jq -r '.[].Image' | sort -u)
 {% endfor %}
 
 set -x
