@@ -1,5 +1,10 @@
 {
     "[ansible]": {
-        "editor.tabSize": 2
+        "editor.tabSize": 2,
+        "editor.indentSize": 2
+    },
+    "[yaml]": {
+        "editor.tabSize": 2,
+        "editor.indentSize": 2
     }
 }
