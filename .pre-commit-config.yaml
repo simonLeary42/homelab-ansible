@@ -24,8 +24,6 @@ repos:
         types: [yaml]
         exclude: |
           (?x)^(
-            roles/oddish/templates/matrix-synapse-homeserver-sample.yaml|
-            roles/oddish/templates/hookshot-config.sample.yml|
             roles/oddish/templates/prometheus-config-example.yml|
             roles/oddish/templates/alertmanager-example.yml|
           )$
