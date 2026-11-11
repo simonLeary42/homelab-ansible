@@ -20,6 +20,7 @@
         dest: "/tmp/rust-{{ rust_version }}-x86_64-unknown-linux-gnu.tar.gz"
         mode: "0644"
         force: false
+        checksum: "{{ rust_installer_checksum }}"
     - name: setup parent dir
       file:
         path: "/tmp/rust-{{ rust_version }}"
