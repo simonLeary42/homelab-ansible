@@ -21,6 +21,10 @@ route:
     # disable the normal "service crashed" alert in favor of my custom "service failed" alert
     - matchers: [alertname="HostSystemdServiceCrashed"]
       receiver: "null"
+    - matchers: [alertname="HostContextSwitching"]
+      receiver: "null"
+    - matchers: [alertname="HostUnusualDiskWriteRate"]
+      receiver: "null"
 
 # inhibit_rules:
 #   - source_matchers: [severity="critical"]
