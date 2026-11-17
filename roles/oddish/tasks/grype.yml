@@ -32,6 +32,14 @@
         mode: "0755"
         remote_src: true
 
+- name: install grype filter script
+  unity.copy_multi_diff.copy:
+    src: grype_filter.py
+    dest: /usr/local/bin/grype_filter.py
+    owner: root
+    group: root
+    mode: "0755"
+
 - name: install grype script
   unity.template_multi_diff.template:
     src: grype-everything.bash.j2
